@@ -1,5 +1,5 @@
 // كل نصوص الواجهة في ملف واحد (الدارجة التونسية).
-import type { Duration, EatWith, Meal, Protein, Season } from '../domain/types'
+import type { Duration, EatWith, Frequency, Meal, Protein, Season } from '../domain/types'
 import type { Reason, Relaxed } from '../domain/suggest'
 
 const meals: Record<Meal, string> = { ftour: 'فطور', acha: 'عشاء' }
@@ -94,6 +94,8 @@ export const ar = {
       duration: 'مدة التحضير',
       season: 'الفصل',
       fresh: 'تحتاج حوت أو خضرة من السوق',
+      frequency: 'كم مرة تطبخوها؟',
+      heavy: 'دسمة وثقيلة (ما تنفعش للعشاء)',
       description: 'المكونات الأساسية',
       descriptionPlaceholder: 'مثال: كسكسي، لحم، حمص، خضرة',
       days: 'نهار مفضل (اختياري)',
@@ -105,6 +107,7 @@ export const ar = {
     },
     durations: { quick: 'سريعة', normal: 'عادية', long: 'طويلة' } as Record<Duration, string>,
     seasons: { all: 'الكل', winter: 'شتاء', summer: 'صيف' } as Record<Season, string>,
+    frequencies: { often: 'برشا', normal: 'عادي', rare: 'من وقت لوقت' } as Record<Frequency, string>,
   },
   settings: {
     lead: 'ظبّط التطبيق على عادات الدار.',

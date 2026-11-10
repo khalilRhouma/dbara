@@ -65,3 +65,15 @@ describe('diffFields: description and days', () => {
     expect(diffFields({ ...dish, days: undefined }, fields({ days: [] }))).toEqual({})
   })
 })
+
+describe('diffFields: frequency and heavy', () => {
+  it('treats missing values as "normal" and "not heavy"', () => {
+    expect(diffFields(dish, fields({ frequency: 'normal', heavy: false }))).toEqual({})
+    expect(diffFields(dish, fields({ frequency: 'rare' }))).toEqual({ frequency: 'rare' })
+    expect(diffFields(dish, fields({ heavy: true }))).toEqual({ heavy: true })
+    expect(diffFields({ ...dish, frequency: 'often', heavy: true }, fields({ frequency: 'normal', heavy: false }))).toEqual({
+      frequency: 'normal',
+      heavy: false,
+    })
+  })
+})

@@ -1,6 +1,6 @@
 import * as v from 'valibot'
 import { isValidISODate } from '../domain/dates'
-import { DURATIONS, EAT_WITH, MEALS, PROTEINS, SEASONS, WEEKDAYS, type Dish, type HistoryEntry, type Settings } from '../domain/types'
+import { DURATIONS, EAT_WITH, FREQUENCIES, MEALS, PROTEINS, SEASONS, WEEKDAYS, type Dish, type HistoryEntry, type Settings } from '../domain/types'
 
 // Validation of everything that comes from outside the app: localStorage and imported files.
 // Library: valibot (small, tree-shakeable, TypeScript-first).
@@ -17,6 +17,8 @@ const dishFields = {
   duration: v.picklist(DURATIONS),
   season: v.picklist(SEASONS),
   fresh: v.boolean(),
+  frequency: v.optional(v.picklist(FREQUENCIES)),
+  heavy: v.optional(v.boolean()),
   description: v.optional(v.pipe(v.string(), v.trim())),
   days: v.optional(
     v.pipe(

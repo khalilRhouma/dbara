@@ -40,7 +40,7 @@ Dbara does exactly that, in about two taps.
   "غيرها" shows the next three.
 - **Remembers what you cooked.** It will not suggest the same dish for 3 days, and it avoids
   the same family of dishes (pasta after pasta).
-- **Knows the season and your habits.** Winter dishes (soups, jariya pasta) are rarely suggested in summer, and the other way round. Set a favorite day for a dish, such as couscous on Friday.
+- **Knows how your family eats.** Everyday dishes come first, soups and jariya pasta come after (and a bit more in winter), and dinner stays light. Set a favorite day for a dish, such as couscous on Friday.
 - **Knows market day.** Dishes that need fresh fish or vegetables are preferred right after you shop.
 - **Your own dish list.** 55 Tunisian dishes to start, each with a short list of its main components. Add, edit, favorite or hide any of them.
 - **Private by design.** No account and no server. Everything stays in your phone's browser.
@@ -82,12 +82,15 @@ The rules are one pure function with all the numbers in one place:
    | Cooked 8 to 14 days ago | −2 |
    | Same family as yesterday's dish | −5 |
    | Same main protein as today's or yesterday's dish | −2 |
+   | Everyday dish (marked "often") | +3 |
+   | "From time to time" dish (soups, jariya pasta) | −3 |
+   | Heavy dish, at dinner | −4 |
    | Favorite | +3 |
    | Today is one of the dish's favorite days | +4 |
-   | Matches the season | +3 |
-   | Wrong season (rare, not forbidden) | −9 |
+   | Matches the season | +2 |
+   | Other season (a small priority, not a ban) | −5 |
    | Fresh dish, on or just after market day | +3 |
-   | A little randomness | 0 to 2 |
+   | A little randomness | 0 to 4 |
 
 3. **Show.** The top three, each with a short reason.
 

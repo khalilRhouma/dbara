@@ -4,7 +4,18 @@ import type { Dish, Protein, Weekday } from './types'
 /** The fields the dish form edits. (favorite and hidden have their own buttons in the list.) */
 export type DishFields = Pick<
   Dish,
-  'name' | 'meal' | 'requires' | 'eatWith' | 'family' | 'duration' | 'season' | 'fresh' | 'description' | 'days'
+  | 'name'
+  | 'meal'
+  | 'requires'
+  | 'eatWith'
+  | 'family'
+  | 'duration'
+  | 'season'
+  | 'fresh'
+  | 'frequency'
+  | 'heavy'
+  | 'description'
+  | 'days'
 >
 
 /** Remove empty groups, repeated proteins inside a group, and repeated groups. */
@@ -42,6 +53,8 @@ export function diffFields(current: Dish, next: DishFields): DishEdit {
   compare('duration', current.duration, next.duration)
   compare('season', current.season, next.season)
   compare('fresh', current.fresh, next.fresh)
+  compare('frequency', current.frequency ?? 'normal', next.frequency ?? 'normal')
+  compare('heavy', current.heavy ?? false, next.heavy ?? false)
   // "no description" and "no days" are stored as '' and [] so that clearing a built-in value works.
   compare('description', current.description ?? '', (next.description ?? '').trim())
   compare('days', cleanDays(current.days), cleanDays(next.days))

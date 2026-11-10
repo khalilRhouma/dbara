@@ -5,12 +5,14 @@ export const PROTEINS = ['meat', 'chicken', 'fish', 'egg', 'tuna'] as const;
 export const EAT_WITH = ['spoon', 'bread'] as const;
 export const DURATIONS = ['quick', 'normal', 'long'] as const;
 export const SEASONS = ['all', 'winter', 'summer'] as const;
+export const FREQUENCIES = ['often', 'normal', 'rare'] as const; // how often the family cooks it
 
 export type Meal = (typeof MEALS)[number]
 export type Protein = (typeof PROTEINS)[number]
 export type EatWith = (typeof EAT_WITH)[number]
 export type Duration = (typeof DURATIONS)[number]
 export type Season = (typeof SEASONS)[number]
+export type Frequency = (typeof FREQUENCIES)[number]
 /** 0 = Sunday ... 6 = Saturday (same as Date.getDay()). */
 export type Weekday = 0 | 1 | 2 | 3 | 4 | 5 | 6
 export const WEEKDAYS: readonly Weekday[] = [0, 1, 2, 3, 4, 5, 6]
@@ -29,6 +31,8 @@ export interface Dish {
   duration: Duration
   season: Season
   fresh: boolean // needs fish or vegetables from the market
+  frequency?: Frequency // how common the dish is at home; missing = 'normal'
+  heavy?: boolean // rich and filling: less suited to dinner
   description?: string // short list of the main components, shown on the cards
   days?: Weekday[] // days the family likes this dish (e.g. couscous on Friday)
   favorite?: boolean

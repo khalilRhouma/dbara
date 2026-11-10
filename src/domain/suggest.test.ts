@@ -193,7 +193,7 @@ describe('weights', () => {
     expect(scoreOf(run([dish('plain')], { settings: { marketDay: 2 } }), 'plain')).toBe(10)
   })
 
-  it('random bonus is rng() * 2, so between 0 and 2', () => {
+  it('random bonus is rng() * randomMax', () => {
     expect(scoreOf(run([dish('a')], { rng: () => 0.5 }), 'a')).toBe(10 + 0.5 * W.randomMax)
     expect(scoreOf(run([dish('a')], { rng: () => 0.999999 }), 'a')).toBeLessThan(10 + W.randomMax)
   })
@@ -205,15 +205,21 @@ describe('weights', () => {
   })
 })
 
-describe('season is a strong preference, not a hard rule', () => {
+describe('season is a priority, not a rule', () => {
   const july = new Date(2026, 6, 14, 12)
   const january = new Date(2026, 0, 14, 12)
 
-  it('puts a winter dish far below ordinary dishes in summer (even with the random bonus)', () => {
+  it('puts a winter dish below ordinary dishes in summer', () => {
     const dishes = [dish('soup', { season: 'winter' }), dish('a'), dish('b'), dish('c')]
-    const r = run(dishes, { now: july, rng: () => 0.999 }) // maximum random bonus for every dish
+    const r = run(dishes, { now: july })
     expect(ids(r).at(-1)).toBe('soup')
-    expect(scoreOf(r, 'soup')!).toBeLessThan(scoreOf(r, 'a')! - 5)
+    expect(scoreOf(r, 'a')! - scoreOf(r, 'soup')!).toBe(-W.seasonOpposite)
+  })
+
+  it('gives the dish of the current season only a small advantage', () => {
+    const r = run([dish('soup', { season: 'winter' }), dish('a')], { now: january })
+    expect(scoreOf(r, 'soup')! - scoreOf(r, 'a')!).toBe(W.seasonMatch)
+    expect(W.seasonMatch).toBeLessThanOrEqual(2)
   })
 
   it('still offers the winter dish in summer when nothing else is left', () => {
@@ -223,6 +229,34 @@ describe('season is a strong preference, not a hard rule', () => {
   it('a summer dish is the one pushed down in winter', () => {
     const r = run([dish('salad', { season: 'summer' }), dish('a')], { now: january })
     expect(ids(r)).toEqual(['a', 'salad'])
+  })
+})
+
+describe('how common the dish is', () => {
+  it('everyday dishes get a bonus, "from time to time" dishes a penalty, normal ones nothing', () => {
+    const r = run([dish('often', { frequency: 'often' }), dish('rare', { frequency: 'rare' }), dish('normal', { frequency: 'normal' }), dish('unset')])
+    expect(scoreOf(r, 'often')).toBe(10 + W.often)
+    expect(scoreOf(r, 'rare')).toBe(10 + W.rare)
+    expect(scoreOf(r, 'normal')).toBe(10)
+    expect(scoreOf(r, 'unset')).toBe(10)
+  })
+
+  it('a rare dish in its own season still ranks below an everyday dish', () => {
+    const r = run([dish('jariya', { season: 'winter', frequency: 'rare' }), dish('couscous', { frequency: 'often' })], { now: new Date(2026, 0, 14, 12) })
+    expect(ids(r)).toEqual(['couscous', 'jariya'])
+  })
+})
+
+describe('light dinner', () => {
+  it('a heavy dish loses points at dinner only', () => {
+    const d = [dish('heavy', { heavy: true }), dish('light')]
+    expect(scoreOf(run(d, { input: { meal: 'acha' } }), 'heavy')).toBe(10 + W.heavyAtDinner)
+    expect(scoreOf(run(d, { input: { meal: 'ftour' } }), 'heavy')).toBe(10)
+    expect(scoreOf(run(d, { input: { meal: 'acha' } }), 'light')).toBe(10)
+  })
+
+  it('a heavy dish can still be suggested at dinner when nothing else is left', () => {
+    expect(ids(run([dish('heavy', { heavy: true })], { input: { meal: 'acha' } }))).toEqual(['heavy'])
   })
 })
 

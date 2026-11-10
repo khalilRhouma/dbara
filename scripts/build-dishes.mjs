@@ -12,6 +12,7 @@ const EAT = { ملعقة: 'spoon', خبز: 'bread' }
 const DURATION = { سريع: 'quick', عادي: 'normal', طويل: 'long' }
 const SEASON = { الكل: 'all', شتاء: 'winter', صيف: 'summer' }
 const PROTEIN = { لحم: 'meat', دجاج: 'chicken', سمك: 'fish', بيض: 'egg', تن: 'tuna' }
+const FREQUENCY = { برشا: 'often', عادي: 'normal', قليل: 'rare' }
 const WEEKDAY = { الأحد: 0, الإثنين: 1, الاثنين: 1, الثلاثاء: 2, الأربعاء: 3, الخميس: 4, الجمعة: 5, السبت: 6 }
 
 const fail = (row, msg) => {
@@ -37,8 +38,8 @@ const rows = md
   .map((l) => l.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((c) => c.trim()))
 
 const dishes = rows.map((row) => {
-  if (row.length !== 11) fail(row, `expected 11 columns, found ${row.length}`)
-  const [name, meal, protein, eat, family, duration, season, fresh, description, days, id] = row
+  if (row.length !== 13) fail(row, `expected 13 columns, found ${row.length}`)
+  const [name, meal, protein, eat, family, duration, season, fresh, heavy, frequency, description, days, id] = row
   if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(id)) fail(row, `bad id "${id}"`)
   const dish = {
     id,
@@ -52,6 +53,10 @@ const dishes = rows.map((row) => {
     fresh: fresh === 'نعم',
     description,
   }
+  // Only the unusual values are written: "normal" and "not heavy" are the defaults.
+  const f = pick(FREQUENCY, frequency, row, 'frequency')
+  if (f !== 'normal') dish.frequency = f
+  if (heavy === 'نعم') dish.heavy = true
   const d = parseDays(days, row)
   if (d.length > 0) dish.days = d
   return dish

@@ -1,9 +1,9 @@
-import { Check, Plus, ShoppingBasket, Snowflake, Sun, Calendar, Utensils } from 'lucide-react'
+import { Calendar, Check, Flame, Plus, ShoppingBasket, Snowflake, Sun, Utensils } from 'lucide-react'
 import { useState } from 'react'
 import { Choice } from '../components/Choice'
 import { DURATION_ICON, EAT_WITH_ICON, MEAL_ICON, PROTEIN_ICON } from '../components/icons'
 import { cleanDays, cleanRequires, type DishFields } from '../domain/dishFields'
-import { DURATIONS, EAT_WITH, MEALS, PROTEINS, SEASONS, WEEKDAYS, type Dish, type Protein } from '../domain/types'
+import { DURATIONS, EAT_WITH, FREQUENCIES, MEALS, PROTEINS, SEASONS, WEEKDAYS, type Dish, type Protein } from '../domain/types'
 import { ar } from '../i18n/ar'
 
 interface Props {
@@ -29,6 +29,8 @@ export function DishForm({ initial, families, onSave, onCancel, onReset }: Props
     duration: initial?.duration ?? 'normal',
     season: initial?.season ?? 'all',
     fresh: initial?.fresh ?? false,
+    frequency: initial?.frequency ?? 'normal',
+    heavy: initial?.heavy ?? false,
     description: initial?.description ?? '',
     days: initial?.days ?? [],
   }))
@@ -135,6 +137,13 @@ export function DishForm({ initial, families, onSave, onCancel, onReset }: Props
         onSelect={(s) => set('season', s)}
       />
 
+      <Choice
+        label={t.frequency}
+        options={FREQUENCIES.map((f) => ({ value: f, label: ar.dishes.frequencies[f] }))}
+        isSelected={(f) => (fields.frequency ?? 'normal') === f}
+        onSelect={(f) => set('frequency', f)}
+      />
+
       <fieldset className="choice">
         <legend>{t.days}</legend>
         <p className="help">{t.daysHelp}</p>
@@ -159,6 +168,10 @@ export function DishForm({ initial, families, onSave, onCancel, onReset }: Props
         <button type="button" className="chip" aria-pressed={fields.fresh} onClick={() => set('fresh', !fields.fresh)}>
           <ShoppingBasket size={18} aria-hidden />
           {t.fresh}
+        </button>
+        <button type="button" className="chip" aria-pressed={fields.heavy === true} onClick={() => set('heavy', !fields.heavy)}>
+          <Flame size={18} aria-hidden />
+          {t.heavy}
         </button>
       </div>
 

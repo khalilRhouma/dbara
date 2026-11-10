@@ -18,15 +18,20 @@ export const CONFIG = {
     familyTwoDaysAgo: -2,
     favorite: +3,
     usesAvailableProtein: +1,
-    seasonMatch: +3,
-    // A dish of the other season is "rarely cooked", not "never": -9 puts it far down
-    // but it can still appear when few dishes are left.
-    seasonOpposite: -9,
+    // Season is a priority, not a rule: any dish can be cooked in any season.
+    seasonMatch: +2,
+    seasonOpposite: -5,
+    // How common the dish is at home. Everyday dishes come first, "from time to time" dishes
+    // (soups, jariya...) come after, even in their own season.
+    often: +3,
+    rare: -3,
+    // Dinner at home is usually light.
+    heavyAtDinner: -4,
     favoriteDay: +4, // the dish is liked on today's weekday (e.g. couscous on Friday)
     sameProteinAsRecent: -2, // same main protein as today's or yesterday's dish
     freshNearMarket: +3, // market day or the day after
     freshFarFromMarket: -3, // 4+ days since market day
-    randomMax: 2, // random bonus in [0, randomMax)
+    randomMax: 4, // random bonus in [0, randomMax)
   },
 } as const
 
@@ -166,6 +171,9 @@ function rank(
       else if (marketDaysSince >= 4) score += w.freshFarFromMarket
     }
 
+    if (dish.frequency === 'often') score += w.often
+    else if (dish.frequency === 'rare') score += w.rare
+    if (dish.heavy && input.meal === 'acha') score += w.heavyAtDinner
     if (dish.days?.includes(weekday)) score += w.favoriteDay
     if (definiteProteins(dish).some((p) => recentProteins.has(p))) score += w.sameProteinAsRecent
 
