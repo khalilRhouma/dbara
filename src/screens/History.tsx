@@ -1,5 +1,8 @@
-import { useReducer, useState } from 'react'
+import { CalendarPlus, Check, History as HistoryIcon, Trash2 } from 'lucide-react'
+import { useReducer, useState, type CSSProperties } from 'react'
 import { Choice } from '../components/Choice'
+import { EmptyState } from '../components/EmptyState'
+import { MEAL_ICON } from '../components/icons'
 import { daysBetween, defaultMeal, toISODate } from '../domain/dates'
 import { MEALS, type Meal } from '../domain/types'
 import { ar } from '../i18n/ar'
@@ -22,34 +25,41 @@ export function History() {
   return (
     <section>
       <h1>{ar.screens.history}</h1>
-      <p className="muted">{ar.history.lastDays}</p>
+      <p className="lead">{ar.history.lastDays}</p>
 
       {entries.length === 0 ? (
-        <p className="muted">{ar.history.empty}</p>
+        <EmptyState icon={HistoryIcon} title={ar.history.empty} />
       ) : (
         <ul className="cards">
-          {entries.map((e) => (
-            <li key={`${e.date}|${e.meal}`} className="card row">
+          {entries.map((e, i) => {
+            const MealIcon = MEAL_ICON[e.meal]
+            return (
+            <li key={`${e.date}|${e.meal}`} className="card row" style={{ '--i': Math.min(i, 8) } as CSSProperties}>
               <span>
                 <strong>{names.get(e.dishId) ?? ar.history.unknownDish}</strong>
-                <br />
-                <span className="muted">
-                  {e.date} · {ar.ask.meals[e.meal]}
+                <span className="tags">
+                  <span className="tag" dir="ltr">{e.date}</span>
+                  <span className="tag">
+                    <MealIcon size={13} aria-hidden />
+                    {ar.ask.meals[e.meal]}
+                  </span>
                 </span>
               </span>
               <button
                 type="button"
-                className="secondary small"
+                className="icon-btn danger"
+                aria-label={ar.history.remove}
                 onClick={() => {
                   if (!window.confirm(ar.history.removeConfirm)) return
                   store.removeHistory(e.date, e.meal)
                   refresh()
                 }}
               >
-                {ar.history.remove}
+                <Trash2 size={20} aria-hidden />
               </button>
             </li>
-          ))}
+            )
+          })}
         </ul>
       )}
 
@@ -64,6 +74,7 @@ export function History() {
         />
       ) : (
         <button type="button" className="primary" onClick={() => setAdding(true)}>
+          <CalendarPlus size={22} aria-hidden />
           {ar.history.add}
         </button>
       )}
@@ -95,7 +106,7 @@ function AddEntry({ today, dishes, onDone }: { today: string; dishes: { id: stri
       </div>
       <Choice
         label={ar.ask.meal}
-        options={MEALS.map((m) => ({ value: m, label: ar.ask.meals[m] }))}
+        options={MEALS.map((m) => ({ value: m, label: ar.ask.meals[m], icon: MEAL_ICON[m] }))}
         isSelected={(m) => meal === m}
         onSelect={setMeal}
       />
@@ -112,6 +123,7 @@ function AddEntry({ today, dishes, onDone }: { today: string; dishes: { id: stri
       </div>
       <div className="actions">
         <button type="submit" className="primary" disabled={!canSave}>
+          <Check size={22} aria-hidden />
           {ar.history.save}
         </button>
         <button type="button" className="secondary" onClick={onDone}>

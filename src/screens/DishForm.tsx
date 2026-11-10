@@ -1,5 +1,7 @@
+import { Check, Plus, ShoppingBasket, Snowflake, Sun, Calendar, Utensils } from 'lucide-react'
 import { useState } from 'react'
 import { Choice } from '../components/Choice'
+import { DURATION_ICON, EAT_WITH_ICON, MEAL_ICON, PROTEIN_ICON } from '../components/icons'
 import { cleanRequires, type DishFields } from '../domain/dishFields'
 import { DURATIONS, EAT_WITH, MEALS, PROTEINS, SEASONS, type Dish, type Protein } from '../domain/types'
 import { ar } from '../i18n/ar'
@@ -15,6 +17,7 @@ interface Props {
 }
 
 const t = ar.dishes.form
+const SEASON_ICON = { all: Calendar, winter: Snowflake, summer: Sun }
 
 export function DishForm({ initial, families, onSave, onCancel, onReset }: Props) {
   const [fields, setFields] = useState<DishFields>(() => ({
@@ -54,19 +57,19 @@ export function DishForm({ initial, families, onSave, onCancel, onReset }: Props
 
       <Choice
         label={t.meal}
-        options={[...MEALS, 'both' as const].map((m) => ({ value: m, label: m === 'both' ? t.mealBoth : ar.ask.meals[m] }))}
+        options={[...MEALS, 'both' as const].map((m) => ({ value: m, label: m === 'both' ? t.mealBoth : ar.ask.meals[m], icon: m === 'both' ? Utensils : MEAL_ICON[m] }))}
         isSelected={(m) => fields.meal === m}
         onSelect={(m) => set('meal', m)}
       />
 
       <fieldset className="choice">
         <legend>{t.requires}</legend>
-        <p className="muted">{t.requiresHelp}</p>
+        <p className="help">{t.requiresHelp}</p>
         {fields.requires.map((group, i) => (
           <div key={i} className="group">
             <Choice
               label={`${t.group} ${i + 1}`}
-              options={PROTEINS.map((p) => ({ value: p, label: ar.ask.proteins[p] }))}
+              options={PROTEINS.map((p) => ({ value: p, label: ar.ask.proteins[p], icon: PROTEIN_ICON[p] }))}
               isSelected={(p) => group.includes(p)}
               onSelect={(p) => toggleInGroup(i, p)}
             />
@@ -76,13 +79,14 @@ export function DishForm({ initial, families, onSave, onCancel, onReset }: Props
           </div>
         ))}
         <button type="button" className="secondary" onClick={() => set('requires', [...fields.requires, []])}>
+          <Plus size={18} aria-hidden />
           {t.addGroup}
         </button>
       </fieldset>
 
       <Choice
         label={t.eatWith}
-        options={EAT_WITH.map((e) => ({ value: e, label: ar.ask.eatWithOptions[e] }))}
+        options={EAT_WITH.map((e) => ({ value: e, label: ar.ask.eatWithOptions[e], icon: EAT_WITH_ICON[e] }))}
         isSelected={(e) => fields.eatWith === e}
         onSelect={(e) => set('eatWith', e)}
       />
@@ -99,26 +103,28 @@ export function DishForm({ initial, families, onSave, onCancel, onReset }: Props
 
       <Choice
         label={t.duration}
-        options={DURATIONS.map((d) => ({ value: d, label: ar.dishes.durations[d] }))}
+        options={DURATIONS.map((d) => ({ value: d, label: ar.dishes.durations[d], icon: DURATION_ICON[d] }))}
         isSelected={(d) => fields.duration === d}
         onSelect={(d) => set('duration', d)}
       />
 
       <Choice
         label={t.season}
-        options={SEASONS.map((s) => ({ value: s, label: ar.dishes.seasons[s] }))}
+        options={SEASONS.map((s) => ({ value: s, label: ar.dishes.seasons[s], icon: SEASON_ICON[s] }))}
         isSelected={(s) => fields.season === s}
         onSelect={(s) => set('season', s)}
       />
 
       <div className="chips">
         <button type="button" className="chip" aria-pressed={fields.fresh} onClick={() => set('fresh', !fields.fresh)}>
+          <ShoppingBasket size={18} aria-hidden />
           {t.fresh}
         </button>
       </div>
 
       <div className="actions">
         <button type="submit" className="primary" disabled={!canSave}>
+          <Check size={22} aria-hidden />
           {t.save}
         </button>
         <button type="button" className="secondary" onClick={onCancel}>

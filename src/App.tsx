@@ -1,6 +1,8 @@
+import { ChefHat } from 'lucide-react'
 import { useState } from 'react'
 import { toISODate } from './domain/dates'
 import type { AskInput, Dish } from './domain/types'
+import { ar } from './i18n/ar'
 import { TABS, type TabId } from './nav'
 import { Ask } from './screens/Ask'
 import { Dishes } from './screens/Dishes'
@@ -28,6 +30,12 @@ export default function App() {
 
   return (
     <div className="app">
+      <header className="topbar">
+        <span className="brand-mark">
+          <ChefHat size={22} aria-hidden />
+        </span>
+        <span className="brand-name">{ar.appName}</span>
+      </header>
       <main className="content">
         {tab === 'today' &&
           (asked ? (
@@ -48,6 +56,7 @@ export default function App() {
             aria-current={t.id === tab ? 'page' : undefined}
             onClick={() => openTab(t.id)}
           >
+            <t.icon size={22} strokeWidth={t.id === tab ? 2.4 : 2} aria-hidden />
             {t.label}
           </button>
         ))}

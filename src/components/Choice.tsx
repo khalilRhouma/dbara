@@ -1,7 +1,10 @@
-// A row of buttons with a label. Used for the four questions.
+import type { LucideIcon } from 'lucide-react'
+
+// A labelled row of pill buttons. Used for the four questions and in the forms.
 interface Option<T extends string> {
   value: T
   label: string
+  icon?: LucideIcon
 }
 
 interface Props<T extends string> {
@@ -10,7 +13,7 @@ interface Props<T extends string> {
   isSelected: (value: T) => boolean
   onSelect: (value: T) => void
   /** Extra button after the options (e.g. "none" for the protein question). */
-  extra?: { label: string; selected: boolean; onSelect: () => void }
+  extra?: { label: string; icon?: LucideIcon; selected: boolean; onSelect: () => void }
 }
 
 export function Choice<T extends string>({ label, options, isSelected, onSelect, extra }: Props<T>) {
@@ -18,19 +21,15 @@ export function Choice<T extends string>({ label, options, isSelected, onSelect,
     <fieldset className="choice">
       <legend>{label}</legend>
       <div className="chips">
-        {options.map((o) => (
-          <button
-            key={o.value}
-            type="button"
-            className="chip"
-            aria-pressed={isSelected(o.value)}
-            onClick={() => onSelect(o.value)}
-          >
-            {o.label}
+        {options.map(({ value, label: text, icon: Icon }) => (
+          <button key={value} type="button" className="chip" aria-pressed={isSelected(value)} onClick={() => onSelect(value)}>
+            {Icon && <Icon size={18} aria-hidden />}
+            {text}
           </button>
         ))}
         {extra && (
           <button type="button" className="chip" aria-pressed={extra.selected} onClick={extra.onSelect}>
+            {extra.icon && <extra.icon size={18} aria-hidden />}
             {extra.label}
           </button>
         )}

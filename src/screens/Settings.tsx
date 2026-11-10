@@ -1,9 +1,10 @@
+import { CalendarDays, Download, ShieldCheck, Upload } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { toISODate } from '../domain/dates'
+import type { Settings as SettingsData } from '../domain/types'
 import { ar } from '../i18n/ar'
 import { downloadText } from '../storage/download'
 import { store } from '../storage/instance'
-import type { Settings as SettingsData } from '../domain/types'
 
 export function Settings() {
   const [settings, setSettings] = useState(() => store.getSettings())
@@ -35,9 +36,12 @@ export function Settings() {
   return (
     <section>
       <h1>{ar.screens.settings}</h1>
+      <p className="lead">{ar.settings.lead}</p>
 
-      <div className="field">
-        <label htmlFor="market-day">{ar.settings.marketDay}</label>
+      <div className="card field">
+        <label htmlFor="market-day">
+          <CalendarDays size={18} aria-hidden /> {ar.settings.marketDay}
+        </label>
         <select id="market-day" value={settings.marketDay ?? ''} onChange={(e) => changeMarketDay(e.target.value)}>
           <option value="">{ar.settings.noMarketDay}</option>
           {ar.settings.weekdays.map((name, i) => (
@@ -46,33 +50,40 @@ export function Settings() {
             </option>
           ))}
         </select>
-        <p className="muted">{ar.settings.marketDayHelp}</p>
+        <p className="help">{ar.settings.marketDayHelp}</p>
       </div>
 
-      <h2>{ar.settings.backup}</h2>
-      <div className="actions">
-        <button type="button" className="secondary" onClick={exportFile}>
-          {ar.settings.export}
-        </button>
-        <button type="button" className="secondary" onClick={() => fileInput.current?.click()}>
-          {ar.settings.import}
-        </button>
-        <input
-          ref={fileInput}
-          type="file"
-          accept="application/json,.json"
-          hidden
-          onChange={(e) => {
-            const file = e.target.files?.[0]
-            if (file) void importFile(file)
-          }}
-        />
+      <div className="card">
+        <h2>
+          <ShieldCheck size={18} aria-hidden /> {ar.settings.backup}
+        </h2>
+        <p className="help">{ar.settings.backupHelp}</p>
+        <div className="actions">
+          <button type="button" className="secondary" onClick={exportFile}>
+            <Download size={18} aria-hidden />
+            {ar.settings.export}
+          </button>
+          <button type="button" className="secondary" onClick={() => fileInput.current?.click()}>
+            <Upload size={18} aria-hidden />
+            {ar.settings.import}
+          </button>
+          <input
+            ref={fileInput}
+            type="file"
+            accept="application/json,.json"
+            hidden
+            onChange={(e) => {
+              const file = e.target.files?.[0]
+              if (file) void importFile(file)
+            }}
+          />
+        </div>
+        {message && (
+          <p className={message.ok ? 'notice ok' : 'notice error'} role="status" style={{ marginTop: 14 }}>
+            {message.text}
+          </p>
+        )}
       </div>
-      {message && (
-        <p className={message.ok ? 'notice ok' : 'notice error'} role="status">
-          {message.text}
-        </p>
-      )}
     </section>
   )
 }

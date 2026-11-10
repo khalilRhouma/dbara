@@ -73,7 +73,7 @@ A test checks that both have the same dishes in the same order.
 
 All data (history, settings, your dish edits) is saved in the browser's localStorage under
 keys that start with `dbara.v1.`. Nothing is sent anywhere. Data is per browser and per
-device. Use **Settings → "نزّل النسخة"** to download a backup file, and **"استرجع من ملف"**
+device. Use **Settings → "نزّل النسخة"** to download a backup file, and **"استرجع نسخة"**
 to restore it. A bad file is rejected without changing anything.
 
 ## Deploy

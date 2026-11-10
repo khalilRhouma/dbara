@@ -1,4 +1,6 @@
-import { useReducer, useState } from 'react'
+import { BookOpen, Clock, Eye, EyeOff, Pencil, Plus, Search, Star, Trash2 } from 'lucide-react'
+import { useReducer, useState, type CSSProperties } from 'react'
+import { EmptyState } from '../components/EmptyState'
 import { diffFields, type DishFields } from '../domain/dishFields'
 import type { Dish } from '../domain/types'
 import { ar } from '../i18n/ar'
@@ -55,39 +57,49 @@ export function Dishes() {
   return (
     <section>
       <h1>{ar.screens.dishes}</h1>
+      <p className="lead">{ar.dishes.lead(dishes.length)}</p>
 
-      <div className="field">
+      <div className="search">
+        <Search size={20} aria-hidden />
         <input type="search" placeholder={ar.dishes.search} aria-label={ar.dishes.search} value={query} onChange={(e) => setQuery(e.target.value)} />
       </div>
       <button type="button" className="primary" onClick={() => setEditing('new')}>
+        <Plus size={22} aria-hidden />
         {ar.dishes.add}
       </button>
 
       {shown.length === 0 ? (
-        <p className="muted">{ar.dishes.none}</p>
+        <EmptyState icon={BookOpen} title={ar.dishes.none} />
       ) : (
-        <ul className="cards list">
-          {shown.map((d) => (
-            <li key={d.id} className={d.hidden ? 'card dim' : 'card'}>
+        <ul className="cards" style={{ marginTop: 18 }}>
+          {shown.map((d, i) => (
+            <li key={d.id} className={d.hidden ? 'card dim' : 'card'} style={{ '--i': Math.min(i, 8) } as CSSProperties}>
               <div className="card-head">
-                <h2>{d.name}</h2>
+                <div>
+                  <h2>{d.name}</h2>
+                  <p className="tags">
+                    <span className="tag">{d.family}</span>
+                    <span className="tag">
+                      <Clock size={13} aria-hidden />
+                      {ar.dishes.durations[d.duration]}
+                    </span>
+                    {d.custom && <span className="tag">{ar.dishes.mine}</span>}
+                    {d.hidden && <span className="tag">{ar.dishes.hidden}</span>}
+                  </p>
+                </div>
                 <button
                   type="button"
-                  className="star"
+                  className="icon-btn"
                   aria-pressed={d.favorite === true}
                   aria-label={ar.dishes.favorite}
                   onClick={() => change(() => store.updateDish(d.id, { favorite: !d.favorite }))}
                 >
-                  {d.favorite ? '★' : '☆'}
+                  <Star size={22} fill={d.favorite ? 'currentColor' : 'none'} aria-hidden />
                 </button>
               </div>
-              <p className="muted">
-                {d.family} · {ar.dishes.durations[d.duration]}
-                {d.custom && ` · ${ar.dishes.mine}`}
-                {d.hidden && ` · ${ar.dishes.hidden}`}
-              </p>
               <div className="actions">
                 <button type="button" className="secondary small" onClick={() => setEditing(d)}>
+                  <Pencil size={16} aria-hidden />
                   {ar.dishes.edit}
                 </button>
                 {d.custom ? (
@@ -96,6 +108,7 @@ export function Dishes() {
                     className="secondary small"
                     onClick={() => window.confirm(ar.dishes.removeConfirm) && change(() => store.removeDish(d.id))}
                   >
+                    <Trash2 size={16} aria-hidden />
                     {ar.dishes.remove}
                   </button>
                 ) : (
@@ -104,6 +117,7 @@ export function Dishes() {
                     className="secondary small"
                     onClick={() => change(() => store.updateDish(d.id, { hidden: !d.hidden }))}
                   >
+                    {d.hidden ? <Eye size={16} aria-hidden /> : <EyeOff size={16} aria-hidden />}
                     {d.hidden ? ar.dishes.show : ar.dishes.hide}
                   </button>
                 )}
