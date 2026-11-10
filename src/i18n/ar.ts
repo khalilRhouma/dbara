@@ -1,5 +1,5 @@
 // كل نصوص الواجهة في ملف واحد (الدارجة التونسية).
-import type { Duration, EatWith, Meal, Protein } from '../domain/types'
+import type { Duration, EatWith, Meal, Protein, Season } from '../domain/types'
 import type { Reason, Relaxed } from '../domain/suggest'
 
 const meals: Record<Meal, string> = { ftour: 'فطور', acha: 'عشاء' }
@@ -52,6 +52,69 @@ export const ar = {
   history: {
     empty: 'ما فما حتى طبخة مسجلة.',
     unknownDish: 'طبخة محذوفة',
+    lastDays: 'آخر 30 يوم',
+    remove: 'حذف',
+    removeConfirm: 'تحذف هذا السطر من السجل؟',
+    add: 'زيد طبخة طيّبتوها',
+    date: 'التاريخ',
+    dish: 'الطبخة',
+    save: 'سجّل',
+    cancel: 'إلغاء',
+  },
+  dishes: {
+    search: 'ابحث باسم الطبخة',
+    add: 'طبخة جديدة',
+    none: 'ما لقينا حتى طبخة.',
+    favorite: 'مفضلة',
+    hide: 'إخفاء',
+    show: 'إظهار',
+    hidden: 'مخفية',
+    mine: 'من عندكم',
+    edit: 'تعديل',
+    remove: 'حذف',
+    removeConfirm: 'تحذف هذه الطبخة نهائيا؟',
+    form: {
+      newTitle: 'طبخة جديدة',
+      editTitle: 'تعديل الطبخة',
+      name: 'الاسم',
+      meal: 'الوجبة',
+      mealBoth: 'الاثنين',
+      requires: 'البروتين اللازم',
+      requiresHelp:
+        'لازم يكون عندك واحد على الأقل من كل مجموعة. لحم ودجاج في نفس المجموعة تعني: لحم أو دجاج. بدون مجموعات: ما تحتاج حتى بروتين.',
+      group: 'مجموعة',
+      addGroup: 'زيد مجموعة',
+      removeGroup: 'احذف المجموعة',
+      eatWith: 'كيفاش تتاكل؟',
+      family: 'العائلة',
+      duration: 'مدة التحضير',
+      season: 'الفصل',
+      fresh: 'تحتاج حوت أو خضرة من السوق',
+      save: 'سجّل',
+      cancel: 'إلغاء',
+      reset: 'رجّع الأصل',
+      defaultFamily: 'أخرى',
+    },
+    durations: { quick: 'سريعة', normal: 'عادية', long: 'طويلة' } as Record<Duration, string>,
+    seasons: { all: 'الكل', winter: 'شتاء', summer: 'صيف' } as Record<Season, string>,
+  },
+  settings: {
+    marketDay: 'يوم السوق',
+    marketDayHelp: 'الطبخات اللي تحتاج حوت أو خضرة تطلع أكثر في يوم السوق واليوم اللي بعده.',
+    noMarketDay: 'ما عنديش',
+    weekdays: ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'],
+    backup: 'نسخة احتياطية',
+    export: 'نزّل النسخة',
+    import: 'استرجع من ملف',
+    importConfirm: 'الاسترجاع يعوّض السجل والإعدادات والطبخات اللي بدّلتوها بمحتوى الملف. نكملو؟',
+    importDone: (c: { history: number; added: number; edited: number }) =>
+      `تمّ الاسترجاع: ${c.history} سطر في السجل، ${c.added} طبخة مضافة، ${c.edited} طبخة معدّلة.`,
+    importErrors: {
+      'not-json': 'الملف موش صالح.',
+      'invalid-format': 'هذا موش ملف نسخة احتياطية من دبارة، أو فيه خطأ.',
+      'duplicate-id': 'الملف فيه طبخة بمعرّف مكرر.',
+      'write-failed': 'ما نجمناش نكتبو البيانات (يمكن الذاكرة عامرة). ما تبدّل شيء.',
+    },
   },
   soon: 'قريبا',
 } as const

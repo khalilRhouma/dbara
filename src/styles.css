@@ -84,3 +84,30 @@ h2 { font-size: 1.1rem; margin: 0 0 4px; }
 .reason { color: var(--accent); margin-top: 4px; }
 .notice { background: #fff4d6; border: 1px solid #ecd48a; border-radius: 10px; padding: 10px 12px; margin: 0 0 12px; }
 .actions { display: flex; gap: 8px; }
+
+/* ---- Forms and lists (step 6) ---- */
+.field { margin: 0 0 16px; }
+.field label { display: block; font-weight: 700; margin-bottom: 6px; }
+input, select {
+  width: 100%;
+  min-height: var(--tap);
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  font: inherit;
+  color: var(--text);
+}
+.primary:disabled { opacity: 0.5; cursor: default; }
+.secondary.small { flex: 0 0 auto; padding: 6px 14px; }
+.actions { margin: 12px 0 0; flex-wrap: wrap; }
+.card + .primary, .field + .primary { margin-top: 12px; }
+form.card { margin: 16px 0; }
+.group { border: 1px dashed var(--border); border-radius: 10px; padding: 8px 10px; margin: 0 0 10px; }
+.link { background: none; border: 0; padding: 8px 0; min-height: var(--tap); color: var(--accent); font: inherit; text-decoration: underline; cursor: pointer; }
+.card-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.star { min-width: var(--tap); min-height: var(--tap); border: 0; background: none; font-size: 1.5rem; color: var(--accent); cursor: pointer; }
+.dim { opacity: 0.55; }
+.cards.list { margin-top: 16px; }
+.notice.ok { background: #e3f4e1; border-color: #9bd196; }
+.notice.error { background: #fde4e1; border-color: #e3a29b; }

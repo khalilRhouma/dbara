@@ -23,7 +23,7 @@ Local copies go in `docs/`:
 - [x] Step 3: suggestion logic
 - [x] Step 4: storage
 - [x] Step 5: daily flow
-- [ ] Step 6: secondary screens
+- [x] Step 6: secondary screens
 - [ ] Step 7: deploy
 
 ## Commands
