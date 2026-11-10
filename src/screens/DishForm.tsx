@@ -2,8 +2,8 @@ import { Check, Plus, ShoppingBasket, Snowflake, Sun, Calendar, Utensils } from 
 import { useState } from 'react'
 import { Choice } from '../components/Choice'
 import { DURATION_ICON, EAT_WITH_ICON, MEAL_ICON, PROTEIN_ICON } from '../components/icons'
-import { cleanRequires, type DishFields } from '../domain/dishFields'
-import { DURATIONS, EAT_WITH, MEALS, PROTEINS, SEASONS, type Dish, type Protein } from '../domain/types'
+import { cleanDays, cleanRequires, type DishFields } from '../domain/dishFields'
+import { DURATIONS, EAT_WITH, MEALS, PROTEINS, SEASONS, WEEKDAYS, type Dish, type Protein } from '../domain/types'
 import { ar } from '../i18n/ar'
 
 interface Props {
@@ -29,6 +29,8 @@ export function DishForm({ initial, families, onSave, onCancel, onReset }: Props
     duration: initial?.duration ?? 'normal',
     season: initial?.season ?? 'all',
     fresh: initial?.fresh ?? false,
+    description: initial?.description ?? '',
+    days: initial?.days ?? [],
   }))
   const set = <K extends keyof DishFields>(key: K, value: DishFields[K]) => setFields((f) => ({ ...f, [key]: value }))
 
@@ -45,7 +47,15 @@ export function DishForm({ initial, families, onSave, onCancel, onReset }: Props
       className="card"
       onSubmit={(e) => {
         e.preventDefault()
-        if (canSave) onSave({ ...fields, name: fields.name.trim(), family: fields.family.trim(), requires: cleanRequires(fields.requires) })
+        if (canSave)
+          onSave({
+            ...fields,
+            name: fields.name.trim(),
+            family: fields.family.trim(),
+            requires: cleanRequires(fields.requires),
+            description: (fields.description ?? '').trim(),
+            days: cleanDays(fields.days),
+          })
       }}
     >
       <h2>{initial ? t.editTitle : t.newTitle}</h2>
@@ -53,6 +63,16 @@ export function DishForm({ initial, families, onSave, onCancel, onReset }: Props
       <div className="field">
         <label htmlFor="d-name">{t.name}</label>
         <input id="d-name" value={fields.name} onChange={(e) => set('name', e.target.value)} />
+      </div>
+
+      <div className="field">
+        <label htmlFor="d-desc">{t.description}</label>
+        <input
+          id="d-desc"
+          value={fields.description ?? ''}
+          placeholder={t.descriptionPlaceholder}
+          onChange={(e) => set('description', e.target.value)}
+        />
       </div>
 
       <Choice
@@ -115,7 +135,27 @@ export function DishForm({ initial, families, onSave, onCancel, onReset }: Props
         onSelect={(s) => set('season', s)}
       />
 
-      <div className="chips">
+      <fieldset className="choice">
+        <legend>{t.days}</legend>
+        <p className="help">{t.daysHelp}</p>
+        <div className="chips">
+          {WEEKDAYS.map((d) => (
+            <button
+              key={d}
+              type="button"
+              className="chip"
+              aria-pressed={(fields.days ?? []).includes(d)}
+              onClick={() =>
+                set('days', (fields.days ?? []).includes(d) ? (fields.days ?? []).filter((x) => x !== d) : [...(fields.days ?? []), d])
+              }
+            >
+              {ar.settings.weekdays[d]}
+            </button>
+          ))}
+        </div>
+      </fieldset>
+
+      <div className="chips" style={{ marginBottom: 18 }}>
         <button type="button" className="chip" aria-pressed={fields.fresh} onClick={() => set('fresh', !fields.fresh)}>
           <ShoppingBasket size={18} aria-hidden />
           {t.fresh}

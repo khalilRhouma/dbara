@@ -94,6 +94,10 @@ export const ar = {
       duration: 'مدة التحضير',
       season: 'الفصل',
       fresh: 'تحتاج حوت أو خضرة من السوق',
+      description: 'المكونات الأساسية',
+      descriptionPlaceholder: 'مثال: كسكسي، لحم، حمص، خضرة',
+      days: 'نهار مفضل (اختياري)',
+      daysHelp: 'اختار النهارات اللي تحبوا فيها هذه الطبخة، مثلا كسكسي نهار الجمعة. تطلع أكثر في هذا النهار.',
       save: 'سجّل',
       cancel: 'إلغاء',
       reset: 'رجّع الأصل',
@@ -135,6 +139,8 @@ export function relaxedText(r: Relaxed): string {
 /** One short sentence saying why a dish is suggested. */
 export function reasonText(r: Reason): string {
   switch (r.kind) {
+    case 'weekday':
+      return `عادتكم نهار ${ar.settings.weekdays[r.day]}`
     case 'notCookedFor':
       return `ما طيبتوهاش من ${daysText(r.days)}`
     case 'neverCooked':

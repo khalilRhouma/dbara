@@ -60,6 +60,7 @@ export function Suggestions({ input, onPick, onBack }: Props) {
                     </p>
                   </div>
                 </div>
+                {dish.description && <p className="desc">{dish.description}</p>}
                 <div className="card-foot">
                   {reason && (
                     <p className="reason">

@@ -1,20 +1,33 @@
 import { describe, expect, it } from 'vitest'
 import tableMd from '../../docs/dishes.md?raw'
 import dishesJson from './dishes.json'
-import { DURATIONS, EAT_WITH, MEALS, PROTEINS, SEASONS, type Dish } from '../domain/types'
+import { DURATIONS, EAT_WITH, MEALS, PROTEINS, SEASONS, WEEKDAYS, type Dish } from '../domain/types'
 
 const dishes = dishesJson as Dish[]
 
-// Rows of the Markdown table in docs/dishes.md, first cell = dish name.
-const tableNames = tableMd
+// Rows of the Markdown table in docs/dishes.md.
+const tableRows = tableMd
   .split('\n')
   .filter((l) => l.startsWith('| ') && !l.startsWith('| الطبخة'))
-  .map((l) => l.split('|')[1].trim())
+  .map((l) => l.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((c) => c.trim()))
+const tableNames = tableRows.map((r) => r[0])
 
 describe('dishes.json', () => {
   it('has as many dishes as the table in docs/dishes.md, in the same order', () => {
     expect(tableNames.length).toBeGreaterThan(0)
     expect(dishes.map((d) => d.name)).toEqual(tableNames)
+  })
+
+  it('is in sync with the table: same ids and descriptions (run `npm run dishes` after editing the table)', () => {
+    expect(dishes.map((d) => d.id)).toEqual(tableRows.map((r) => r[10]))
+    expect(dishes.map((d) => d.description)).toEqual(tableRows.map((r) => r[8]))
+  })
+
+  it('gives every dish a short description', () => {
+    for (const d of dishes) {
+      expect(d.description?.trim(), d.id).toBeTruthy()
+      expect(d.description!.length, d.id).toBeLessThanOrEqual(90)
+    }
   })
 
   it('has unique, slug-shaped ids', () => {
@@ -45,8 +58,15 @@ describe('dishes.json', () => {
     }
   })
 
+  it('has valid favorite days', () => {
+    for (const d of dishes) {
+      for (const day of d.days ?? []) expect(WEEKDAYS, d.id).toContain(day)
+      expect(new Set(d.days ?? []).size, d.id).toBe((d.days ?? []).length)
+    }
+  })
+
   it('has no stray fields (user flags are not in the seed data)', () => {
-    const allowed = new Set(['id', 'name', 'meal', 'requires', 'eatWith', 'family', 'duration', 'season', 'fresh'])
+    const allowed = new Set(['id', 'name', 'meal', 'requires', 'eatWith', 'family', 'duration', 'season', 'fresh', 'description', 'days'])
     for (const d of dishes) for (const k of Object.keys(d)) expect(allowed.has(k), `${d.id}.${k}`).toBe(true)
   })
 })

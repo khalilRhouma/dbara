@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "screenshots": "npm run build && node scripts/screenshots.mjs"
+    "screenshots": "npm run build && node scripts/screenshots.mjs",
+    "dishes": "node scripts/build-dishes.mjs"
   },
   "dependencies": {
     "@fontsource/tajawal": "^5.3.0",

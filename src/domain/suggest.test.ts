@@ -205,6 +205,92 @@ describe('weights', () => {
   })
 })
 
+describe('season is a strong preference, not a hard rule', () => {
+  const july = new Date(2026, 6, 14, 12)
+  const january = new Date(2026, 0, 14, 12)
+
+  it('puts a winter dish far below ordinary dishes in summer (even with the random bonus)', () => {
+    const dishes = [dish('soup', { season: 'winter' }), dish('a'), dish('b'), dish('c')]
+    const r = run(dishes, { now: july, rng: () => 0.999 }) // maximum random bonus for every dish
+    expect(ids(r).at(-1)).toBe('soup')
+    expect(scoreOf(r, 'soup')!).toBeLessThan(scoreOf(r, 'a')! - 5)
+  })
+
+  it('still offers the winter dish in summer when nothing else is left', () => {
+    expect(ids(run([dish('soup', { season: 'winter' })], { now: july }))).toEqual(['soup'])
+  })
+
+  it('a summer dish is the one pushed down in winter', () => {
+    const r = run([dish('salad', { season: 'summer' }), dish('a')], { now: january })
+    expect(ids(r)).toEqual(['a', 'salad'])
+  })
+})
+
+describe('weekday habit', () => {
+  // NOW is a Tuesday (2)
+  it('adds points on a liked day', () => {
+    expect(scoreOf(run([dish('a', { days: [2, 5] })]), 'a')).toBe(10 + W.favoriteDay)
+  })
+  it('does nothing on other days, or with no days', () => {
+    expect(scoreOf(run([dish('a', { days: [5] })]), 'a')).toBe(10)
+    expect(scoreOf(run([dish('a', { days: [] })]), 'a')).toBe(10)
+    expect(scoreOf(run([dish('a')]), 'a')).toBe(10)
+  })
+  it('is the first reason shown', () => {
+    const r = run([dish('a', { days: [2], favorite: true })], { history: [cooked('a', 9)] })
+    expect(r.suggestions[0].reason).toEqual({ kind: 'weekday', day: 2 })
+  })
+})
+
+describe('protein variety', () => {
+  const chicken = (id: string, o: Partial<Dish> = {}) => dish(id, { requires: [['chicken']], family: id, ...o })
+  const input = { available: ['chicken', 'meat', 'egg'] as AskInput['available'] }
+  // protein rule: dish +1 for using an available protein, so a chicken dish normally scores 11
+
+  it('penalises the same definite protein as yesterday', () => {
+    const r = run([chicken('c1'), chicken('c2')], { input, history: [cooked('c1', 1)] })
+    expect(scoreOf(r, 'c2')).toBe(10 + W.usesAvailableProtein + W.sameProteinAsRecent)
+  })
+
+  it('also counts what was cooked today', () => {
+    const r = run([chicken('c1'), chicken('c2')], { input, history: [cooked('c1', 0)] })
+    expect(scoreOf(r, 'c2')).toBe(10 + W.usesAvailableProtein + W.sameProteinAsRecent)
+  })
+
+  it('does not count what was cooked two days ago or earlier', () => {
+    const r = run([chicken('c1'), chicken('c2')], { input, history: [cooked('c1', 2)] })
+    expect(scoreOf(r, 'c2')).toBe(10 + W.usesAvailableProtein)
+  })
+
+  it('does not penalise a different protein', () => {
+    const meat = dish('m', { requires: [['meat']] })
+    const r = run([chicken('c1'), meat], { input, history: [cooked('c1', 1)] })
+    expect(scoreOf(r, 'm')).toBe(10 + W.usesAvailableProtein)
+  })
+
+  it('ignores "meat or chicken" dishes, because we do not know which one was used', () => {
+    const either = dish('either', { requires: [['meat', 'chicken']] })
+    const r1 = run([chicken('c1'), either], { input, history: [cooked('c1', 1)] })
+    expect(scoreOf(r1, 'either')).toBe(10 + W.usesAvailableProtein)
+    const r2 = run([either, chicken('c2')], { input, history: [cooked('either', 1)] })
+    expect(scoreOf(r2, 'c2')).toBe(10 + W.usesAvailableProtein)
+  })
+
+  it('does nothing for dishes without a definite protein', () => {
+    const r = run([chicken('c1'), dish('plain')], { input, history: [cooked('c1', 1)] })
+    expect(scoreOf(r, 'plain')).toBe(10)
+  })
+
+  it('uses the proteins of every dish cooked today or yesterday', () => {
+    const fish = dish('f', { requires: [['fish']] })
+    const r = run([chicken('c1'), fish, dish('f2', { requires: [['fish']] })], {
+      input: { available: ['chicken', 'fish'] },
+      history: [cooked('c1', 0), cooked('f', 1)],
+    })
+    expect(scoreOf(r, 'f2')).toBe(10 + W.usesAvailableProtein + W.sameProteinAsRecent)
+  })
+})
+
 describe('ordering', () => {
   it('sorts best score first', () => {
     const dishes = [dish('low', { season: 'winter' }), dish('mid'), dish('high', { favorite: true })]

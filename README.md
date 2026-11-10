@@ -40,8 +40,9 @@ Dbara does exactly that, in about two taps.
   "غيرها" shows the next three.
 - **Remembers what you cooked.** It will not suggest the same dish for 3 days, and it avoids
   the same family of dishes (pasta after pasta).
+- **Knows the season and your habits.** Winter dishes (soups, jariya pasta) are rarely suggested in summer, and the other way round. Set a favorite day for a dish, such as couscous on Friday.
 - **Knows market day.** Dishes that need fresh fish or vegetables are preferred right after you shop.
-- **Your own dish list.** 54 Tunisian dishes to start. Add, edit, favorite or hide any of them.
+- **Your own dish list.** 55 Tunisian dishes to start, each with a short list of its main components. Add, edit, favorite or hide any of them.
 - **Private by design.** No account and no server. Everything stays in your phone's browser.
 - **Backup and restore** as a simple JSON file. A bad file is rejected without changing anything.
 - **Modern, mobile-first design** in Arabic (right-to-left), with automatic dark mode.
@@ -80,8 +81,11 @@ The rules are one pure function with all the numbers in one place:
    | Cooked 4 to 7 days ago | −6 |
    | Cooked 8 to 14 days ago | −2 |
    | Same family as yesterday's dish | −5 |
+   | Same main protein as today's or yesterday's dish | −2 |
    | Favorite | +3 |
-   | Matches the season | +2 |
+   | Today is one of the dish's favorite days | +4 |
+   | Matches the season | +3 |
+   | Wrong season (rare, not forbidden) | −9 |
    | Fresh dish, on or just after market day | +3 |
    | A little randomness | 0 to 2 |
 
@@ -105,6 +109,7 @@ npm run dev        # http://localhost:5173
 | `npm run lint` | Lint (oxlint) |
 | `npm run build` | Type check and production build into `dist/` |
 | `npm run preview` | Serve the production build locally |
+| `npm run dishes` | Rebuild `src/data/dishes.json` from the table in `docs/dishes.md` |
 | `npm run screenshots` | Rebuild the images in `docs/images/` (needs Chrome) |
 
 > `.npmrc` sets `legacy-peer-deps=true` because npm 10 crashes on Vitest 4 peer dependencies.
@@ -139,15 +144,15 @@ src/
   screens/     One file per screen: Ask, Suggestions, History, Dishes, Settings
   components/  Shared UI pieces and the icon map
   i18n/        All interface texts (Arabic) in one file
-scripts/       screenshots.mjs: makes the images used in this README
+scripts/       build-dishes.mjs (table to JSON) and screenshots.mjs (README images)
 docs/
   PLAN.md      Specification and implementation plan (Arabic)
   dishes.md    The initial dish table, the source for src/data/dishes.json
   images/      Screenshots
 ```
 
-Dishes live in `docs/dishes.md` as a table and in `src/data/dishes.json` as data.
-A test checks that both have the same dishes in the same order.
+Dishes live in `docs/dishes.md` as a table that the family can read and edit. After editing it, run
+`npm run dishes` to update `src/data/dishes.json`. A test fails if the two are out of sync.
 
 ## Data and privacy
 

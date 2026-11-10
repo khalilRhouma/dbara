@@ -97,6 +97,7 @@ export function Dishes() {
                   <Star size={22} fill={d.favorite ? 'currentColor' : 'none'} aria-hidden />
                 </button>
               </div>
+              {d.description && <p className="desc">{d.description}</p>}
               <div className="actions">
                 <button type="button" className="secondary small" onClick={() => setEditing(d)}>
                   <Pencil size={16} aria-hidden />

@@ -1,11 +1,13 @@
 import { daysBetween, daysSinceMarketDay, seasonOf, toISODate } from './dates'
-import type { AskInput, Dish, Duration, HistoryEntry, Settings } from './types'
+import type { AskInput, Dish, Duration, HistoryEntry, Protein, Settings, Weekday } from './types'
 
 // All tunable numbers live here. The plan says the weights are estimates
 // and will be adjusted after two weeks of real use.
 export const CONFIG = {
   /** A dish cooked within this many days (0 = today) is removed. */
   blockDays: 3,
+  /** Dishes cooked within this many days count for the "same protein" rule (0 = today, 1 = yesterday). */
+  proteinRecentDays: 1,
   baseScore: 10,
   /** Fewer results than this → relax constraints. Also the page size shown to the user. */
   minResults: 3,
@@ -16,18 +18,28 @@ export const CONFIG = {
     familyTwoDaysAgo: -2,
     favorite: +3,
     usesAvailableProtein: +1,
-    seasonMatch: +2,
-    seasonOpposite: -4,
+    seasonMatch: +3,
+    // A dish of the other season is "rarely cooked", not "never": -9 puts it far down
+    // but it can still appear when few dishes are left.
+    seasonOpposite: -9,
+    favoriteDay: +4, // the dish is liked on today's weekday (e.g. couscous on Friday)
+    sameProteinAsRecent: -2, // same main protein as today's or yesterday's dish
     freshNearMarket: +3, // market day or the day after
     freshFarFromMarket: -3, // 4+ days since market day
     randomMax: 2, // random bonus in [0, randomMax)
   },
 } as const
 
+/** Proteins a dish always needs: the groups with a single choice. ("meat or chicken" is not definite.) */
+function definiteProteins(d: Dish): Protein[] {
+  return d.requires.filter((g) => g.length === 1).map((g) => g[0])
+}
+
 const DURATION_RANK: Record<Duration, number> = { quick: 0, normal: 1, long: 2 }
 
 /** Why a dish is shown. The UI turns this into a short Arabic sentence. */
 export type Reason =
+  | { kind: 'weekday'; day: Weekday }
   | { kind: 'notCookedFor'; days: number }
   | { kind: 'neverCooked' }
   | { kind: 'freshMarket' }
@@ -106,6 +118,14 @@ function rank(
     if (family !== undefined) familyAgo.set(family, Math.min(ago, familyAgo.get(family) ?? Infinity))
   }
 
+  // Definite proteins of the dishes cooked today or yesterday.
+  const recentProteins = new Set<Protein>()
+  for (const [id, ago] of dishAgo) {
+    const d = byId.get(id)
+    if (d && ago <= CONFIG.proteinRecentDays) for (const p of definiteProteins(d)) recentProteins.add(p)
+  }
+  const weekday = now.getDay() as Weekday
+
   const marketDaysSince = settings.marketDay === null ? null : daysSinceMarketDay(now, settings.marketDay)
   const w = CONFIG.weights
   const results: Suggestion[] = []
@@ -146,11 +166,15 @@ function rank(
       else if (marketDaysSince >= 4) score += w.freshFarFromMarket
     }
 
+    if (dish.days?.includes(weekday)) score += w.favoriteDay
+    if (definiteProteins(dish).some((p) => recentProteins.has(p))) score += w.sameProteinAsRecent
+
     score += rng() * w.randomMax
 
     // One short reason, most useful first. "Never cooked" is skipped while the history is empty.
     let reason: Reason | null = null
-    if (ago !== undefined && ago >= 8) reason = { kind: 'notCookedFor', days: ago }
+    if (dish.days?.includes(weekday)) reason = { kind: 'weekday', day: weekday }
+    else if (ago !== undefined && ago >= 8) reason = { kind: 'notCookedFor', days: ago }
     else if (ago === undefined && history.length > 0) reason = { kind: 'neverCooked' }
     else if (dish.fresh && marketDaysSince !== null && marketDaysSince <= 1) reason = { kind: 'freshMarket' }
     else if (dish.favorite) reason = { kind: 'favorite' }
