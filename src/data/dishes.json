@@ -189,10 +189,7 @@
     "season": "winter",
     "fresh": false,
     "description": "مقرونة في مرق خفيف، طماطم، لحم أو دجاج",
-    "frequency": "rare",
-    "vegetables": [
-      "tomato"
-    ]
+    "frequency": "rare"
   },
   {
     "id": "nwasser-chicken",
@@ -210,10 +207,7 @@
     "fresh": false,
     "description": "نواصر (عجين تقليدي)، دجاج، حمص، صلصة طماطم",
     "frequency": "often",
-    "heavy": true,
-    "vegetables": [
-      "tomato"
-    ]
+    "heavy": true
   },
   {
     "id": "doweida-chicken",
@@ -230,10 +224,7 @@
     "season": "all",
     "fresh": false,
     "description": "دويدة (عجين صغير)، دجاج، مرق بالطماطم",
-    "frequency": "rare",
-    "vegetables": [
-      "tomato"
-    ]
+    "frequency": "rare"
   },
   {
     "id": "hlalem",
@@ -286,10 +277,7 @@
     "fresh": false,
     "description": "برغل، لحم علوش، حمص، طماطم",
     "frequency": "rare",
-    "heavy": true,
-    "vegetables": [
-      "tomato"
-    ]
+    "heavy": true
   },
   {
     "id": "rouz-jerbi",
@@ -328,10 +316,7 @@
     "season": "all",
     "fresh": false,
     "description": "أرز، دجاج، طماطم، خضرة",
-    "frequency": "often",
-    "vegetables": [
-      "tomato"
-    ]
+    "frequency": "often"
   },
   {
     "id": "chorba-frik-meat",
@@ -348,10 +333,7 @@
     "season": "winter",
     "fresh": false,
     "description": "فريك (قمح أخضر مدشّش)، لحم، طماطم، حمص",
-    "frequency": "rare",
-    "vegetables": [
-      "tomato"
-    ]
+    "frequency": "rare"
   },
   {
     "id": "chorba-lsan-asfour-chicken",
@@ -368,10 +350,7 @@
     "season": "all",
     "fresh": false,
     "description": "لسان عصفور (عجين صغير)، دجاج، طماطم، نعناع",
-    "frequency": "rare",
-    "vegetables": [
-      "tomato"
-    ]
+    "frequency": "rare"
   },
   {
     "id": "chorba-fish",
@@ -388,10 +367,7 @@
     "season": "all",
     "fresh": true,
     "description": "حوت، طماطم، عجين صغير، توابل",
-    "frequency": "rare",
-    "vegetables": [
-      "tomato"
-    ]
+    "frequency": "rare"
   },
   {
     "id": "chorba-vegetables",
@@ -408,8 +384,7 @@
     "vegetables": [
       "carrot",
       "potato",
-      "cabbage",
-      "tomato"
+      "cabbage"
     ]
   },
   {
@@ -439,7 +414,6 @@
     "frequency": "rare",
     "vegetables": [
       "carrot",
-      "tomato",
       "onion"
     ]
   },
@@ -453,10 +427,7 @@
     "duration": "normal",
     "season": "winter",
     "fresh": false,
-    "description": "عدس، طماطم، ثوم، كمون، لحم اختياري",
-    "vegetables": [
-      "tomato"
-    ]
+    "description": "عدس، طماطم، ثوم، كمون، لحم اختياري"
   },
   {
     "id": "molokhia",
@@ -536,8 +507,7 @@
     "heavy": true,
     "vegetables": [
       "potato",
-      "pepper",
-      "tomato"
+      "pepper"
     ]
   },
   {
@@ -557,8 +527,7 @@
     "description": "لوبيا، لحم، طماطم، ثوم",
     "heavy": true,
     "vegetables": [
-      "beans",
-      "tomato"
+      "beans"
     ]
   },
   {
@@ -578,8 +547,7 @@
     "description": "قناوية (بامية)، لحم، طماطم",
     "heavy": true,
     "vegetables": [
-      "okra",
-      "tomato"
+      "okra"
     ]
   },
   {
@@ -635,10 +603,7 @@
     "season": "all",
     "fresh": false,
     "description": "لحم، حمص، طماطم، هريسة، توابل",
-    "heavy": true,
-    "vegetables": [
-      "tomato"
-    ]
+    "heavy": true
   },
   {
     "id": "kefta-sauce",
@@ -698,8 +663,8 @@
     "heavy": true,
     "vegetables": [
       "pepper",
-      "tomato",
-      "onion"
+      "onion",
+      "tomato"
     ]
   },
   {
@@ -923,8 +888,8 @@
     "frequency": "often",
     "vegetables": [
       "pepper",
-      "tomato",
-      "onion"
+      "onion",
+      "tomato"
     ]
   },
   {
@@ -1078,10 +1043,7 @@
     "duration": "normal",
     "season": "all",
     "fresh": false,
-    "description": "عجين، تن، جبن، طماطم، زيتون",
-    "vegetables": [
-      "tomato"
-    ]
+    "description": "عجين، تن، جبن، طماطم، زيتون"
   },
   {
     "id": "kasskrout-tuna",
