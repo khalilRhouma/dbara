@@ -138,6 +138,22 @@ describe('settings', () => {
   })
 })
 
+describe('last choices', () => {
+  it('defaults to no protein and "any"', () => {
+    expect(store.getLastChoices()).toEqual({ available: [], eatWith: 'any' })
+  })
+
+  it('remembers the last answers after a restart', () => {
+    store.setLastChoices({ available: ['meat', 'egg'], eatWith: 'bread' })
+    expect(make().getLastChoices()).toEqual({ available: ['meat', 'egg'], eatWith: 'bread' })
+  })
+
+  it('is not part of the backup file', () => {
+    store.setLastChoices({ available: ['meat'], eatWith: 'spoon' })
+    expect(store.exportData()).not.toContain('spoon')
+  })
+})
+
 describe('mergeDishes', () => {
   it('applies edits to built-in dishes without changing the seed', () => {
     const before = JSON.stringify(seed)

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import dishesJson from '../data/dishes.json'
 import { toISODate } from './dates'
-import { CONFIG, suggest } from './suggest'
+import { CONFIG, pageOf, suggest, type Reason } from './suggest'
 import type { AskInput, Dish, HistoryEntry, Settings } from './types'
 
 // 2026-04-14 is a Tuesday in a neutral month (no season rule applies), so each test
@@ -275,6 +275,51 @@ describe('relaxing constraints when fewer than 3 dishes match', () => {
 
   it('returns an empty list (not an error) when nothing matches', () => {
     expect(run([])).toEqual({ suggestions: [], relaxed: [] })
+  })
+})
+
+describe('reason', () => {
+  const reasonOf = (r: ReturnType<typeof run>, id: string): Reason | null | undefined => r.suggestions.find((s) => s.dish.id === id)?.reason
+
+  it('has no reason for a plain dish while the history is empty', () => {
+    expect(reasonOf(run([dish('a')]), 'a')).toBeNull()
+  })
+
+  it('says how long ago it was cooked, from 8 days', () => {
+    expect(reasonOf(run([dish('a')], { history: [cooked('a', 9)] }), 'a')).toEqual({ kind: 'notCookedFor', days: 9 })
+    expect(reasonOf(run([dish('a')], { history: [cooked('a', 5)] }), 'a')).toBeNull()
+  })
+
+  it('says "never cooked" only when there is some history', () => {
+    const r = run([dish('a'), dish('b')], { history: [cooked('b', 20)] })
+    expect(reasonOf(r, 'a')).toEqual({ kind: 'neverCooked' })
+  })
+
+  it('says fresh from the market, favorite, or season when nothing about history applies', () => {
+    expect(reasonOf(run([dish('a', { fresh: true })], { settings: { marketDay: 2 } }), 'a')).toEqual({ kind: 'freshMarket' })
+    expect(reasonOf(run([dish('a', { favorite: true })]), 'a')).toEqual({ kind: 'favorite' })
+    const winter = run([dish('a', { season: 'winter' })], { now: new Date(2026, 0, 14, 12) })
+    expect(reasonOf(winter, 'a')).toEqual({ kind: 'season', season: 'winter' })
+  })
+
+  it('prefers the history reason over the others', () => {
+    const r = run([dish('a', { favorite: true })], { history: [cooked('a', 10)] })
+    expect(reasonOf(r, 'a')).toEqual({ kind: 'notCookedFor', days: 10 })
+  })
+})
+
+describe('pageOf', () => {
+  const items = [1, 2, 3, 4, 5, 6, 7]
+  it('returns 3 at a time', () => {
+    expect(pageOf(items, 0)).toEqual([1, 2, 3])
+    expect(pageOf(items, 1)).toEqual([4, 5, 6])
+    expect(pageOf(items, 2)).toEqual([7])
+  })
+  it('goes back to the first page after the last', () => {
+    expect(pageOf(items, 3)).toEqual([1, 2, 3])
+  })
+  it('handles empty lists', () => {
+    expect(pageOf([], 0)).toEqual([])
   })
 })
 

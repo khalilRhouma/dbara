@@ -41,6 +41,13 @@ export const SettingsSchema: v.GenericSchema<unknown, Settings> = v.object({
   marketDay: v.nullable(v.picklist([0, 1, 2, 3, 4, 5, 6])),
 })
 
+/** Last answers to the protein and eat-with questions, used as defaults next time. Not part of backups. */
+export const LastChoicesSchema = v.object({
+  available: v.array(v.picklist(PROTEINS)),
+  eatWith: v.picklist([...EAT_WITH, 'any']),
+})
+export type LastChoices = v.InferOutput<typeof LastChoicesSchema>
+
 export const UserDishesSchema = v.object({
   added: v.array(CustomDishSchema),
   edits: v.record(v.string(), DishEditSchema),

@@ -3,6 +3,7 @@ import type { Dish, HistoryEntry, Meal, Settings } from '../domain/types'
 import {
   BackupSchema,
   CustomDishSchema,
+  LastChoicesSchema,
   DishEditSchema,
   HistoryEntrySchema,
   SettingsSchema,
@@ -10,6 +11,7 @@ import {
   firstIssue,
   type Backup,
   type DishEdit,
+  type LastChoices,
   type UserDishes,
 } from './schemas'
 
@@ -18,6 +20,7 @@ export const KEYS = {
   history: 'dbara.v1.history',
   dishes: 'dbara.v1.dishes', // only what the user changed or added, never a copy of the built-in list
   settings: 'dbara.v1.settings',
+  last: 'dbara.v1.last', // last protein / eat-with answers; a convenience, not exported
 } as const
 
 /** The part of the Web Storage API we use, so tests can pass a fake. */
@@ -32,6 +35,7 @@ export type ImportResult =
   | { ok: false; code: 'not-json' | 'invalid-format' | 'duplicate-id' | 'write-failed'; detail?: string }
 
 const DEFAULT_SETTINGS: Settings = { marketDay: null }
+const DEFAULT_LAST: LastChoices = { available: [], eatWith: 'any' }
 const EMPTY_USER_DISHES: UserDishes = { added: [], edits: {} }
 const MEAL_ORDER: Record<Meal, number> = { ftour: 0, acha: 1 }
 
@@ -124,6 +128,10 @@ export function createStore(storage: StorageLike, seed: Dish[], opts: { newId?: 
   const getSettings = (): Settings => readValid(KEYS.settings, SettingsSchema, DEFAULT_SETTINGS)
   const setSettings = (patch: Partial<Settings>): void => write(KEYS.settings, { ...getSettings(), ...patch })
 
+  // ---- Last answers (defaults for the next time) ----
+  const getLastChoices = (): LastChoices => readValid(KEYS.last, LastChoicesSchema, DEFAULT_LAST)
+  const setLastChoices = (c: LastChoices): void => write(KEYS.last, c)
+
   // ---- Dishes ----
   const getUserDishes = (): UserDishes => readValid(KEYS.dishes, UserDishesSchema, EMPTY_USER_DISHES)
   const getDishes = (): Dish[] => mergeDishes(seed, getUserDishes())
@@ -212,7 +220,7 @@ export function createStore(storage: StorageLike, seed: Dish[], opts: { newId?: 
     const byKey = new Map(backup.history.map((e) => [`${e.date}|${e.meal}`, e]))
     const history = sortHistory([...byKey.values()])
 
-    const previous = Object.values(KEYS).map((k) => [k, storage.getItem(k)] as const)
+    const previous = [KEYS.history, KEYS.settings, KEYS.dishes].map((k) => [k, storage.getItem(k)] as const)
     try {
       write(KEYS.history, history)
       write(KEYS.settings, backup.settings)
@@ -237,6 +245,7 @@ export function createStore(storage: StorageLike, seed: Dish[], opts: { newId?: 
   return {
     getHistory, addHistory, removeHistory,
     getSettings, setSettings,
+    getLastChoices, setLastChoices,
     getDishes, getUserDishes, updateDish, addDish, removeDish, resetDish,
     exportData, importData,
   }

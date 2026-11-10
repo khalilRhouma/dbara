@@ -26,9 +26,18 @@ export const CONFIG = {
 
 const DURATION_RANK: Record<Duration, number> = { quick: 0, normal: 1, long: 2 }
 
+/** Why a dish is shown. The UI turns this into a short Arabic sentence. */
+export type Reason =
+  | { kind: 'notCookedFor'; days: number }
+  | { kind: 'neverCooked' }
+  | { kind: 'freshMarket' }
+  | { kind: 'favorite' }
+  | { kind: 'season'; season: 'winter' | 'summer' }
+
 export interface Suggestion {
   dish: Dish
   score: number
+  reason: Reason | null
 }
 
 /** Constraints that were dropped because too few dishes matched. */
@@ -138,9 +147,26 @@ function rank(
     }
 
     score += rng() * w.randomMax
-    results.push({ dish, score })
+
+    // One short reason, most useful first. "Never cooked" is skipped while the history is empty.
+    let reason: Reason | null = null
+    if (ago !== undefined && ago >= 8) reason = { kind: 'notCookedFor', days: ago }
+    else if (ago === undefined && history.length > 0) reason = { kind: 'neverCooked' }
+    else if (dish.fresh && marketDaysSince !== null && marketDaysSince <= 1) reason = { kind: 'freshMarket' }
+    else if (dish.favorite) reason = { kind: 'favorite' }
+    else if (season !== 'neutral' && dish.season === season) reason = { kind: 'season', season }
+
+    results.push({ dish, score, reason })
   }
 
   // Ties are broken by id so the order never depends on input order.
   return results.sort((a, b) => b.score - a.score || a.dish.id.localeCompare(b.dish.id))
+}
+
+/** Page `page` (0, 1, 2...) of `items`, `size` at a time. Goes back to the first page after the last. */
+export function pageOf<T>(items: T[], page: number, size: number = CONFIG.minResults): T[] {
+  if (items.length === 0) return []
+  const pages = Math.ceil(items.length / size)
+  const start = (((page % pages) + pages) % pages) * size
+  return items.slice(start, start + size)
 }

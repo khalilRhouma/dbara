@@ -1,6 +1,8 @@
 // Date helpers. All dates are local time, written as "YYYY-MM-DD".
 // We never use `new Date("YYYY-MM-DD")` (that is UTC); we build dates from parts.
 
+import type { Meal } from './types'
+
 export type SeasonNow = 'winter' | 'summer' | 'neutral'
 
 /** Local date of `d` as "YYYY-MM-DD". */
@@ -40,4 +42,9 @@ export function isValidISODate(s: string): boolean {
   const [y, mo, d] = [Number(m[1]), Number(m[2]), Number(m[3])]
   const date = new Date(Date.UTC(y, mo - 1, d))
   return date.getUTCFullYear() === y && date.getUTCMonth() === mo - 1 && date.getUTCDate() === d
+}
+
+/** Midday meal before 15:00, dinner after. */
+export function defaultMeal(now: Date): Meal {
+  return now.getHours() < 15 ? 'ftour' : 'acha'
 }

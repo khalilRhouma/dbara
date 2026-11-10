@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { daysBetween, daysSinceMarketDay, isValidISODate, seasonOf, toISODate } from './dates'
+import { daysBetween, daysSinceMarketDay, defaultMeal, isValidISODate, seasonOf, toISODate } from './dates'
 
 describe('toISODate', () => {
   it('uses local date parts and zero-pads', () => {
@@ -62,5 +62,14 @@ describe('isValidISODate', () => {
     for (const s of ['2026-02-31', '2027-02-29', '2026-13-01', '2026-00-10', '2026-1-5', '10/11/2026', '', 'abc']) {
       expect(isValidISODate(s), s).toBe(false)
     }
+  })
+})
+
+describe('defaultMeal', () => {
+  it('is the midday meal before 15:00 and dinner from 15:00', () => {
+    expect(defaultMeal(new Date(2026, 3, 14, 0, 0))).toBe('ftour')
+    expect(defaultMeal(new Date(2026, 3, 14, 14, 59))).toBe('ftour')
+    expect(defaultMeal(new Date(2026, 3, 14, 15, 0))).toBe('acha')
+    expect(defaultMeal(new Date(2026, 3, 14, 23, 59))).toBe('acha')
   })
 })
