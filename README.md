@@ -24,7 +24,7 @@ Local copies go in `docs/`:
 - [x] Step 4: storage
 - [x] Step 5: daily flow
 - [x] Step 6: secondary screens
-- [ ] Step 7: deploy
+- [x] Step 7: deploy (workflow ready; needs the GitHub repo, see below)
 
 ## Commands
 
@@ -35,3 +35,27 @@ npm test           # vitest
 npm run lint       # oxlint
 npm run build      # tsc + vite build
 ```
+
+## Deploy (GitHub Pages)
+
+`.github/workflows/deploy.yml` runs lint, tests and build on every push to `main`,
+then publishes `dist/`. Asset paths are relative, so the repo name is not hard-coded.
+
+One-time setup:
+
+```bash
+gh repo create dbara --public --source=. --push
+```
+
+Then in the repo on GitHub: **Settings → Pages → Source: GitHub Actions**.
+The site will be at `https://<your-user>.github.io/dbara/` after the first run
+(Actions tab). GitHub Pages on a private repo needs a paid plan, so use a public repo
+or another host.
+
+The app stores everything in the phone's browser (localStorage). Nothing is sent to a
+server. Use Settings → "نزّل النسخة" to keep a backup file.
+
+## Try it on a phone
+
+Open the site URL in Chrome on Android. Use the same browser each time: data is
+per browser and per device.
