@@ -15,6 +15,10 @@ export const vegetables: Record<Vegetable, string> = {
   pepper: 'فلفل',
   beans: 'لوبيا',
   okra: 'قناوية',
+  tomato: 'طماطم',
+  onion: 'بصل',
+  parsley: 'معدنوس',
+  celery: 'كرافص',
 }
 const eatWith: Record<EatWith | 'any', string> = { spoon: 'بالملعقة', bread: 'بالخبز', any: 'ما يهمش' }
 const durationsAsk: Record<Duration, string> = { quick: 'سريع', normal: 'عادي', long: 'على مهل' }

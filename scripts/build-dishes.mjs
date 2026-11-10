@@ -13,7 +13,7 @@ const DURATION = { سريع: 'quick', عادي: 'normal', طويل: 'long' }
 const SEASON = { الكل: 'all', شتاء: 'winter', صيف: 'summer' }
 const PROTEIN = { لحم: 'meat', دجاج: 'chicken', سمك: 'fish', بيض: 'egg', تن: 'tuna' }
 const FREQUENCY = { برشا: 'often', عادي: 'normal', قليل: 'rare' }
-const VEGETABLE = { بطاطا: 'potato', قرعة: 'squash', سبناخ: 'spinach', جلبانة: 'peas', جزر: 'carrot', كرنب: 'cabbage', فلفل: 'pepper', لوبيا: 'beans', قناوية: 'okra' }
+const VEGETABLE = { بطاطا: 'potato', قرعة: 'squash', سبناخ: 'spinach', جلبانة: 'peas', جزر: 'carrot', كرنب: 'cabbage', فلفل: 'pepper', لوبيا: 'beans', قناوية: 'okra', طماطم: 'tomato', بصل: 'onion', معدنوس: 'parsley', كرافص: 'celery' }
 const WEEKDAY = { الأحد: 0, الإثنين: 1, الاثنين: 1, الثلاثاء: 2, الأربعاء: 3, الخميس: 4, الجمعة: 5, السبت: 6 }
 
 const fail = (row, msg) => {

@@ -5,7 +5,7 @@ export const PROTEINS = ['meat', 'chicken', 'fish', 'egg', 'tuna'] as const;
 export const EAT_WITH = ['spoon', 'bread'] as const;
 export const DURATIONS = ['quick', 'normal', 'long'] as const;
 export const SEASONS = ['all', 'winter', 'summer'] as const;
-export const VEGETABLES = ['potato', 'squash', 'spinach', 'peas', 'carrot', 'cabbage', 'pepper', 'beans', 'okra'] as const
+export const VEGETABLES = ['potato', 'squash', 'spinach', 'peas', 'carrot', 'cabbage', 'pepper', 'beans', 'okra', 'tomato', 'onion', 'parsley', 'celery'] as const
 export const FREQUENCIES = ['often', 'normal', 'rare'] as const; // how often the family cooks it
 
 export type Meal = (typeof MEALS)[number]

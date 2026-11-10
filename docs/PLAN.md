@@ -79,7 +79,7 @@ interface Dish {
   duration: Duration;
   season: Season;
   fresh: boolean;             // تحتاج حوتا أو خضرة من السوق
-  vegetables?: ('potato'|'squash'|'spinach'|'peas'|'carrot'|'cabbage'|'pepper'|'beans'|'okra')[]; // الخضر الأساسية
+  vegetables?: ('potato'|'squash'|'spinach'|'peas'|'carrot'|'cabbage'|'pepper'|'beans'|'okra'|'tomato'|'onion'|'parsley'|'celery')[]; // الخضر الأساسية
   frequency?: 'often'|'normal'|'rare'; // كم مرة تطبخوها: برشا، عادي، من وقت لوقت
   heavy?: boolean;           // دسمة وثقيلة، ما تنفعش للعشاء
   description?: string;       // المكونات الأساسية، تظهر على البطاقة
