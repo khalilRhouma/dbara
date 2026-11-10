@@ -32,3 +32,12 @@ export function seasonOf(now: Date): SeasonNow {
 export function daysSinceMarketDay(now: Date, marketDay: number): number {
   return (now.getDay() - marketDay + 7) % 7
 }
+
+/** True for a real calendar date written as "YYYY-MM-DD" (rejects "2026-02-31"). */
+export function isValidISODate(s: string): boolean {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s)
+  if (!m) return false
+  const [y, mo, d] = [Number(m[1]), Number(m[2]), Number(m[3])]
+  const date = new Date(Date.UTC(y, mo - 1, d))
+  return date.getUTCFullYear() === y && date.getUTCMonth() === mo - 1 && date.getUTCDate() === d
+}

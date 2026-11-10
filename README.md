@@ -21,7 +21,7 @@ Local copies go in `docs/`:
 - [x] Step 1: scaffold
 - [x] Step 2: data
 - [x] Step 3: suggestion logic
-- [ ] Step 4: storage
+- [x] Step 4: storage
 - [ ] Step 5: daily flow
 - [ ] Step 6: secondary screens
 - [ ] Step 7: deploy

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { daysBetween, daysSinceMarketDay, seasonOf, toISODate } from './dates'
+import { daysBetween, daysSinceMarketDay, isValidISODate, seasonOf, toISODate } from './dates'
 
 describe('toISODate', () => {
   it('uses local date parts and zero-pads', () => {
@@ -50,5 +50,17 @@ describe('daysSinceMarketDay', () => {
   })
   it('wraps around the week', () => {
     expect(daysSinceMarketDay(tuesday, 3)).toBe(6) // last Wednesday
+  })
+})
+
+describe('isValidISODate', () => {
+  it('accepts real dates, including 29 February in a leap year', () => {
+    expect(isValidISODate('2026-11-10')).toBe(true)
+    expect(isValidISODate('2028-02-29')).toBe(true)
+  })
+  it('rejects impossible dates and wrong formats', () => {
+    for (const s of ['2026-02-31', '2027-02-29', '2026-13-01', '2026-00-10', '2026-1-5', '10/11/2026', '', 'abc']) {
+      expect(isValidISODate(s), s).toBe(false)
+    }
   })
 })
