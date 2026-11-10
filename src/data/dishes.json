@@ -1,0 +1,814 @@
+[
+  {
+    "id": "couscous-allouch",
+    "name": "كسكسي بالعلوش",
+    "meal": "ftour",
+    "requires": [
+      [
+        "meat"
+      ]
+    ],
+    "eatWith": "spoon",
+    "family": "كسكسي",
+    "duration": "long",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "couscous-chicken",
+    "name": "كسكسي بالدجاج",
+    "meal": "ftour",
+    "requires": [
+      [
+        "chicken"
+      ]
+    ],
+    "eatWith": "spoon",
+    "family": "كسكسي",
+    "duration": "long",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "couscous-fish",
+    "name": "كسكسي بالحوت",
+    "meal": "ftour",
+    "requires": [
+      [
+        "fish"
+      ]
+    ],
+    "eatWith": "spoon",
+    "family": "كسكسي",
+    "duration": "long",
+    "season": "all",
+    "fresh": true
+  },
+  {
+    "id": "makrouna-sauce-meat",
+    "name": "مقرونة بالصلصة واللحم",
+    "meal": "both",
+    "requires": [
+      [
+        "meat"
+      ]
+    ],
+    "eatWith": "spoon",
+    "family": "مقرونة",
+    "duration": "normal",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "makrouna-chicken",
+    "name": "مقرونة بالدجاج",
+    "meal": "both",
+    "requires": [
+      [
+        "chicken"
+      ]
+    ],
+    "eatWith": "spoon",
+    "family": "مقرونة",
+    "duration": "normal",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "makrouna-tuna",
+    "name": "مقرونة بالتن",
+    "meal": "both",
+    "requires": [
+      [
+        "tuna"
+      ]
+    ],
+    "eatWith": "spoon",
+    "family": "مقرونة",
+    "duration": "quick",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "makrouna-seafood",
+    "name": "مقرونة بغلال البحر",
+    "meal": "both",
+    "requires": [
+      [
+        "fish"
+      ]
+    ],
+    "eatWith": "spoon",
+    "family": "مقرونة",
+    "duration": "normal",
+    "season": "all",
+    "fresh": true
+  },
+  {
+    "id": "makrouna-koucha",
+    "name": "مقرونة في الكوشة",
+    "meal": "both",
+    "requires": [
+      [
+        "meat",
+        "chicken"
+      ]
+    ],
+    "eatWith": "spoon",
+    "family": "مقرونة",
+    "duration": "normal",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "makrouna-jariya",
+    "name": "مقرونة جارية",
+    "meal": "both",
+    "requires": [
+      [
+        "meat",
+        "chicken"
+      ]
+    ],
+    "eatWith": "spoon",
+    "family": "مقرونة",
+    "duration": "normal",
+    "season": "winter",
+    "fresh": false
+  },
+  {
+    "id": "nwasser-chicken",
+    "name": "نواصر بالدجاج",
+    "meal": "ftour",
+    "requires": [
+      [
+        "chicken"
+      ]
+    ],
+    "eatWith": "spoon",
+    "family": "عجين",
+    "duration": "long",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "doweida-chicken",
+    "name": "دويدة بالدجاج",
+    "meal": "both",
+    "requires": [
+      [
+        "chicken"
+      ]
+    ],
+    "eatWith": "spoon",
+    "family": "عجين",
+    "duration": "normal",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "hlalem",
+    "name": "حلالم",
+    "meal": "both",
+    "requires": [
+      [
+        "meat"
+      ]
+    ],
+    "eatWith": "spoon",
+    "family": "شربة",
+    "duration": "long",
+    "season": "winter",
+    "fresh": false
+  },
+  {
+    "id": "mhamsa",
+    "name": "محمص",
+    "meal": "both",
+    "requires": [],
+    "eatWith": "spoon",
+    "family": "محمص وبرغل",
+    "duration": "normal",
+    "season": "winter",
+    "fresh": false
+  },
+  {
+    "id": "borghol-allouch",
+    "name": "برغل بالعلوش",
+    "meal": "ftour",
+    "requires": [
+      [
+        "meat"
+      ]
+    ],
+    "eatWith": "spoon",
+    "family": "محمص وبرغل",
+    "duration": "long",
+    "season": "winter",
+    "fresh": false
+  },
+  {
+    "id": "rouz-jerbi",
+    "name": "روز جربي",
+    "meal": "ftour",
+    "requires": [
+      [
+        "meat",
+        "chicken"
+      ]
+    ],
+    "eatWith": "spoon",
+    "family": "روز",
+    "duration": "long",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "rouz-chicken",
+    "name": "روز بالدجاج",
+    "meal": "both",
+    "requires": [
+      [
+        "chicken"
+      ]
+    ],
+    "eatWith": "spoon",
+    "family": "روز",
+    "duration": "normal",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "chorba-frik-meat",
+    "name": "شربة فريك باللحم",
+    "meal": "both",
+    "requires": [
+      [
+        "meat"
+      ]
+    ],
+    "eatWith": "spoon",
+    "family": "شربة",
+    "duration": "normal",
+    "season": "winter",
+    "fresh": false
+  },
+  {
+    "id": "chorba-lsan-asfour-chicken",
+    "name": "شربة لسان عصفور بالدجاج",
+    "meal": "acha",
+    "requires": [
+      [
+        "chicken"
+      ]
+    ],
+    "eatWith": "spoon",
+    "family": "شربة",
+    "duration": "normal",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "chorba-fish",
+    "name": "شربة حوت",
+    "meal": "both",
+    "requires": [
+      [
+        "fish"
+      ]
+    ],
+    "eatWith": "spoon",
+    "family": "شربة",
+    "duration": "normal",
+    "season": "all",
+    "fresh": true
+  },
+  {
+    "id": "chorba-vegetables",
+    "name": "شربة خضرة",
+    "meal": "acha",
+    "requires": [],
+    "eatWith": "spoon",
+    "family": "شربة",
+    "duration": "normal",
+    "season": "winter",
+    "fresh": true
+  },
+  {
+    "id": "lablabi",
+    "name": "لبلابي",
+    "meal": "both",
+    "requires": [],
+    "eatWith": "spoon",
+    "family": "بقول",
+    "duration": "normal",
+    "season": "winter",
+    "fresh": false
+  },
+  {
+    "id": "adas",
+    "name": "عدس",
+    "meal": "both",
+    "requires": [],
+    "eatWith": "spoon",
+    "family": "بقول",
+    "duration": "normal",
+    "season": "winter",
+    "fresh": false
+  },
+  {
+    "id": "molokhia",
+    "name": "ملوخية",
+    "meal": "ftour",
+    "requires": [
+      [
+        "meat"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "مرقة",
+    "duration": "long",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "kammounia",
+    "name": "كمونية",
+    "meal": "ftour",
+    "requires": [
+      [
+        "meat"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "مرقة",
+    "duration": "normal",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "marqa-jelbana",
+    "name": "مرقة جلبانة",
+    "meal": "ftour",
+    "requires": [
+      [
+        "meat",
+        "chicken"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "مرقة",
+    "duration": "normal",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "marqa-batata",
+    "name": "مرقة بطاطا",
+    "meal": "ftour",
+    "requires": [
+      [
+        "meat",
+        "chicken"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "مرقة",
+    "duration": "normal",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "marqa-loubia",
+    "name": "مرقة لوبيا",
+    "meal": "ftour",
+    "requires": [
+      [
+        "meat"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "مرقة",
+    "duration": "long",
+    "season": "winter",
+    "fresh": false
+  },
+  {
+    "id": "marqa-qnaouia",
+    "name": "مرقة قناوية",
+    "meal": "ftour",
+    "requires": [
+      [
+        "meat"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "مرقة",
+    "duration": "long",
+    "season": "summer",
+    "fresh": true
+  },
+  {
+    "id": "marqa-zitoun",
+    "name": "مرقة زيتون",
+    "meal": "ftour",
+    "requires": [
+      [
+        "meat",
+        "chicken"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "مرقة",
+    "duration": "normal",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "marqa-sbanekh",
+    "name": "مرقة سبناخ",
+    "meal": "ftour",
+    "requires": [
+      [
+        "meat"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "مرقة",
+    "duration": "normal",
+    "season": "winter",
+    "fresh": true
+  },
+  {
+    "id": "mermez",
+    "name": "مرمز",
+    "meal": "ftour",
+    "requires": [
+      [
+        "meat"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "مرقة",
+    "duration": "normal",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "kefta-sauce",
+    "name": "كفتة بالصلصة",
+    "meal": "both",
+    "requires": [
+      [
+        "meat"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "مرقة",
+    "duration": "normal",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "kabkabou",
+    "name": "كبكابو",
+    "meal": "ftour",
+    "requires": [
+      [
+        "fish"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "مرقة",
+    "duration": "normal",
+    "season": "all",
+    "fresh": true
+  },
+  {
+    "id": "gallaya",
+    "name": "قلاية",
+    "meal": "both",
+    "requires": [
+      [
+        "meat"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "مرقة",
+    "duration": "quick",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "stuffed-pepper-potato",
+    "name": "فلفل وبطاطا محشية",
+    "meal": "ftour",
+    "requires": [
+      [
+        "meat"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "محشي",
+    "duration": "long",
+    "season": "all",
+    "fresh": true
+  },
+  {
+    "id": "mselli",
+    "name": "مصلي علوش أو دجاج",
+    "meal": "ftour",
+    "requires": [
+      [
+        "meat",
+        "chicken"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "كوشة",
+    "duration": "long",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "chicken-roasted-koucha",
+    "name": "دجاج محمر في الكوشة",
+    "meal": "both",
+    "requires": [
+      [
+        "chicken"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "كوشة",
+    "duration": "normal",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "fish-koucha",
+    "name": "حوت في الكوشة",
+    "meal": "both",
+    "requires": [
+      [
+        "fish"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "كوشة",
+    "duration": "normal",
+    "season": "all",
+    "fresh": true
+  },
+  {
+    "id": "grilled-fish",
+    "name": "حوت مشوي",
+    "meal": "both",
+    "requires": [
+      [
+        "fish"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "مشوي",
+    "duration": "normal",
+    "season": "all",
+    "fresh": true
+  },
+  {
+    "id": "grilled-lamb",
+    "name": "علوش مشوي",
+    "meal": "both",
+    "requires": [
+      [
+        "meat"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "مشوي",
+    "duration": "normal",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "fried-fish-tastira",
+    "name": "حوت مقلي بالتسطيرة",
+    "meal": "ftour",
+    "requires": [
+      [
+        "fish"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "مقلي",
+    "duration": "normal",
+    "season": "all",
+    "fresh": true
+  },
+  {
+    "id": "koftaji",
+    "name": "كفتاجي",
+    "meal": "both",
+    "requires": [
+      [
+        "egg"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "مقلي",
+    "duration": "normal",
+    "season": "summer",
+    "fresh": true
+  },
+  {
+    "id": "tajine-parsley",
+    "name": "طاجين معدنوس",
+    "meal": "both",
+    "requires": [
+      [
+        "egg"
+      ],
+      [
+        "meat",
+        "chicken"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "طاجين",
+    "duration": "normal",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "tajine-spinach",
+    "name": "طاجين سبناخ",
+    "meal": "both",
+    "requires": [
+      [
+        "egg"
+      ],
+      [
+        "meat",
+        "chicken"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "طاجين",
+    "duration": "normal",
+    "season": "winter",
+    "fresh": true
+  },
+  {
+    "id": "chakchouka",
+    "name": "شكشوكة",
+    "meal": "both",
+    "requires": [
+      [
+        "egg"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "عجة وشكشوكة",
+    "duration": "quick",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "omelette-merguez",
+    "name": "عجة بالمرقاز",
+    "meal": "both",
+    "requires": [
+      [
+        "egg"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "عجة وشكشوكة",
+    "duration": "quick",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "omelette-potato",
+    "name": "عجة بطاطا",
+    "meal": "acha",
+    "requires": [
+      [
+        "egg"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "عجة وشكشوكة",
+    "duration": "quick",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "tastira-eggs",
+    "name": "تسطيرة بالبيض",
+    "meal": "acha",
+    "requires": [
+      [
+        "egg"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "عجة وشكشوكة",
+    "duration": "quick",
+    "season": "summer",
+    "fresh": true
+  },
+  {
+    "id": "brik-tuna-egg",
+    "name": "بريك بالتن والبيض",
+    "meal": "acha",
+    "requires": [
+      [
+        "tuna",
+        "egg"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "مقلي",
+    "duration": "quick",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "fricassee",
+    "name": "فريكاسي",
+    "meal": "acha",
+    "requires": [
+      [
+        "tuna",
+        "egg"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "مقلي",
+    "duration": "long",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "salade-mechouia-tuna-egg",
+    "name": "سلاطة مشوية بالتن والبيض",
+    "meal": "acha",
+    "requires": [
+      [
+        "tuna",
+        "egg"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "سلاطة",
+    "duration": "normal",
+    "season": "summer",
+    "fresh": true
+  },
+  {
+    "id": "mlawi-tuna-cheese",
+    "name": "ملاوي بالتن والجبن",
+    "meal": "acha",
+    "requires": [
+      [
+        "tuna"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "عجين",
+    "duration": "quick",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "pizza-dar",
+    "name": "بيتزا الدار",
+    "meal": "acha",
+    "requires": [
+      [
+        "tuna"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "عجين",
+    "duration": "normal",
+    "season": "all",
+    "fresh": false
+  },
+  {
+    "id": "kasskrout-tuna",
+    "name": "كسكروت تن",
+    "meal": "acha",
+    "requires": [
+      [
+        "tuna"
+      ]
+    ],
+    "eatWith": "bread",
+    "family": "سلاطة",
+    "duration": "quick",
+    "season": "all",
+    "fresh": false
+  }
+]
