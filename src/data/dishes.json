@@ -16,6 +16,11 @@
     "description": "كسكسي، لحم علوش، حمص، خضرة (جزر، قرعة، بطاطا)",
     "frequency": "often",
     "heavy": true,
+    "vegetables": [
+      "carrot",
+      "squash",
+      "potato"
+    ],
     "days": [
       5
     ]
@@ -37,6 +42,11 @@
     "description": "كسكسي، دجاج، حمص، خضرة (جزر، قرعة، بطاطا)",
     "frequency": "often",
     "heavy": true,
+    "vegetables": [
+      "carrot",
+      "squash",
+      "potato"
+    ],
     "days": [
       5
     ]
@@ -57,6 +67,11 @@
     "fresh": true,
     "description": "كسكسي، حوت، خضرة، صلصة حارة",
     "heavy": true,
+    "vegetables": [
+      "carrot",
+      "squash",
+      "potato"
+    ],
     "days": [
       5
     ]
@@ -228,7 +243,10 @@
     "season": "winter",
     "fresh": false,
     "description": "محمص (سميد محمّص)، طماطم، فلفل، لحم اختياري",
-    "frequency": "rare"
+    "frequency": "rare",
+    "vegetables": [
+      "pepper"
+    ]
   },
   {
     "id": "borghol-allouch",
@@ -346,7 +364,12 @@
     "season": "winter",
     "fresh": true,
     "description": "خضرة مشكلة (جزر، بطاطا، كرنب)، طماطم",
-    "frequency": "rare"
+    "frequency": "rare",
+    "vegetables": [
+      "carrot",
+      "potato",
+      "cabbage"
+    ]
   },
   {
     "id": "lablabi",
@@ -372,7 +395,10 @@
     "season": "winter",
     "fresh": false,
     "description": "عدس، جزر، بصل، كمون، طماطم",
-    "frequency": "rare"
+    "frequency": "rare",
+    "vegetables": [
+      "carrot"
+    ]
   },
   {
     "id": "marqa-adas",
@@ -437,7 +463,11 @@
     "fresh": false,
     "description": "جلبانة (بسلة)، لحم أو دجاج، جزر، بصل",
     "frequency": "often",
-    "heavy": true
+    "heavy": true,
+    "vegetables": [
+      "peas",
+      "carrot"
+    ]
   },
   {
     "id": "marqa-batata",
@@ -456,7 +486,11 @@
     "fresh": false,
     "description": "بطاطا، لحم أو دجاج، طماطم، فلفل",
     "frequency": "often",
-    "heavy": true
+    "heavy": true,
+    "vegetables": [
+      "potato",
+      "pepper"
+    ]
   },
   {
     "id": "marqa-loubia",
@@ -473,7 +507,10 @@
     "season": "winter",
     "fresh": false,
     "description": "لوبيا، لحم، طماطم، ثوم",
-    "heavy": true
+    "heavy": true,
+    "vegetables": [
+      "beans"
+    ]
   },
   {
     "id": "marqa-qnaouia",
@@ -490,7 +527,10 @@
     "season": "summer",
     "fresh": true,
     "description": "قناوية (بامية)، لحم، طماطم",
-    "heavy": true
+    "heavy": true,
+    "vegetables": [
+      "okra"
+    ]
   },
   {
     "id": "marqa-zitoun",
@@ -525,7 +565,10 @@
     "season": "winter",
     "fresh": true,
     "description": "سبناخ، لحم، حمص، ثوم",
-    "heavy": true
+    "heavy": true,
+    "vegetables": [
+      "spinach"
+    ]
   },
   {
     "id": "mermez",
@@ -559,7 +602,10 @@
     "season": "all",
     "fresh": false,
     "description": "كفتة (لحم مفروم)، صلصة طماطم، فلفل",
-    "frequency": "often"
+    "frequency": "often",
+    "vegetables": [
+      "pepper"
+    ]
   },
   {
     "id": "kabkabou",
@@ -592,7 +638,10 @@
     "season": "all",
     "fresh": false,
     "description": "لحم، بصل، فلفل، طماطم",
-    "heavy": true
+    "heavy": true,
+    "vegetables": [
+      "pepper"
+    ]
   },
   {
     "id": "stuffed-pepper-potato",
@@ -609,7 +658,11 @@
     "season": "all",
     "fresh": true,
     "description": "فلفل وبطاطا، لحم مفروم، أرز، معدنوس",
-    "heavy": true
+    "heavy": true,
+    "vegetables": [
+      "pepper",
+      "potato"
+    ]
   },
   {
     "id": "mselli",
@@ -644,7 +697,10 @@
     "season": "all",
     "fresh": false,
     "description": "دجاج، بطاطا، ثوم، توابل، فرن",
-    "heavy": true
+    "heavy": true,
+    "vegetables": [
+      "potato"
+    ]
   },
   {
     "id": "fish-koucha",
@@ -660,7 +716,10 @@
     "duration": "normal",
     "season": "all",
     "fresh": true,
-    "description": "حوت، طماطم، فلفل، ثوم، فرن"
+    "description": "حوت، طماطم، فلفل، ثوم، فرن",
+    "vegetables": [
+      "pepper"
+    ]
   },
   {
     "id": "grilled-fish",
@@ -709,7 +768,10 @@
     "duration": "normal",
     "season": "all",
     "fresh": true,
-    "description": "حوت مقلي، تسطيرة (طماطم وفلفل)، ليمون"
+    "description": "حوت مقلي، تسطيرة (طماطم وفلفل)، ليمون",
+    "vegetables": [
+      "pepper"
+    ]
   },
   {
     "id": "koftaji",
@@ -725,7 +787,11 @@
     "duration": "normal",
     "season": "summer",
     "fresh": true,
-    "description": "خضرة مقلية (فلفل، طماطم، بطاطا)، بيض"
+    "description": "خضرة مقلية (فلفل، طماطم، بطاطا)، بيض",
+    "vegetables": [
+      "pepper",
+      "potato"
+    ]
   },
   {
     "id": "tajine-parsley",
@@ -765,7 +831,10 @@
     "duration": "normal",
     "season": "winter",
     "fresh": true,
-    "description": "بيض، سبناخ، لحم أو دجاج، جبن، فرن"
+    "description": "بيض، سبناخ، لحم أو دجاج، جبن، فرن",
+    "vegetables": [
+      "spinach"
+    ]
   },
   {
     "id": "chakchouka",
@@ -782,7 +851,10 @@
     "season": "all",
     "fresh": false,
     "description": "بيض، طماطم، فلفل، بصل، هريسة",
-    "frequency": "often"
+    "frequency": "often",
+    "vegetables": [
+      "pepper"
+    ]
   },
   {
     "id": "omelette-merguez",
@@ -815,7 +887,10 @@
     "season": "all",
     "fresh": false,
     "description": "بيض، بطاطا، بصل",
-    "frequency": "often"
+    "frequency": "often",
+    "vegetables": [
+      "potato"
+    ]
   },
   {
     "id": "tastira-eggs",
@@ -831,7 +906,10 @@
     "duration": "quick",
     "season": "summer",
     "fresh": true,
-    "description": "طماطم، فلفل، بيض، ثوم"
+    "description": "طماطم، فلفل، بيض، ثوم",
+    "vegetables": [
+      "pepper"
+    ]
   },
   {
     "id": "brik-tuna-egg",
@@ -865,7 +943,10 @@
     "duration": "long",
     "season": "all",
     "fresh": false,
-    "description": "عجين مقلي، تن، بيض، بطاطا، زيتون، هريسة"
+    "description": "عجين مقلي، تن، بيض، بطاطا، زيتون، هريسة",
+    "vegetables": [
+      "potato"
+    ]
   },
   {
     "id": "salade-mechouia-tuna-egg",
@@ -882,7 +963,10 @@
     "duration": "normal",
     "season": "summer",
     "fresh": true,
-    "description": "فلفل وطماطم مشويين، تن، بيض"
+    "description": "فلفل وطماطم مشويين، تن، بيض",
+    "vegetables": [
+      "pepper"
+    ]
   },
   {
     "id": "mlawi-tuna-cheese",

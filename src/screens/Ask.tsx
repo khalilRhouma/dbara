@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Choice } from '../components/Choice'
 import { DURATION_ICON, EAT_WITH_ICON, MEAL_ICON, PROTEIN_ICON } from '../components/icons'
 import { defaultMeal } from '../domain/dates'
-import { DURATIONS, EAT_WITH, MEALS, PROTEINS, type AskInput, type Protein } from '../domain/types'
+import { DURATIONS, EAT_WITH, MEALS, PROTEINS, VEGETABLES, type AskInput, type Protein, type Vegetable } from '../domain/types'
 import { ar } from '../i18n/ar'
 import { store } from '../storage/instance'
 
@@ -17,7 +17,7 @@ export function Ask({ onSubmit, onLeftovers }: Props) {
   // Meal comes from the clock; protein and eat-with come from the last time.
   const [input, setInput] = useState<AskInput>(() => {
     const last = store.getLastChoices()
-    return { meal: defaultMeal(new Date()), available: last.available, eatWith: last.eatWith, maxDuration: 'long' }
+    return { meal: defaultMeal(new Date()), available: last.available, vegetables: [], eatWith: last.eatWith, maxDuration: 'long' }
   })
 
   const toggleProtein = (p: Protein) =>
@@ -25,6 +25,12 @@ export function Ask({ onSubmit, onLeftovers }: Props) {
       ...i,
       available: i.available.includes(p) ? i.available.filter((x) => x !== p) : [...i.available, p],
     }))
+
+  const toggleVegetable = (v: Vegetable) =>
+    setInput((i) => {
+      const current = i.vegetables ?? []
+      return { ...i, vegetables: current.includes(v) ? current.filter((x) => x !== v) : [...current, v] }
+    })
 
   function submit() {
     store.setLastChoices({ available: input.available, eatWith: input.eatWith })
@@ -54,6 +60,13 @@ export function Ask({ onSubmit, onLeftovers }: Props) {
           selected: input.available.length === 0,
           onSelect: () => setInput((i) => ({ ...i, available: [] })),
         }}
+      />
+
+      <Choice
+        label={ar.ask.vegetables}
+        options={VEGETABLES.map((v) => ({ value: v, label: ar.ask.vegetableNames[v] }))}
+        isSelected={(v) => (input.vegetables ?? []).includes(v)}
+        onSelect={toggleVegetable}
       />
 
       <Choice

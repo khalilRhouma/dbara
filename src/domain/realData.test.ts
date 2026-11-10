@@ -77,6 +77,12 @@ describe('with the real dish list', () => {
     expect(longTop(friday)).toBeGreaterThan(longTop(tuesday))
   })
 
+  it('with spinach at home, a spinach dish is in the top three most of the time', () => {
+    const input: AskInput = { meal: 'ftour', available: ['meat', 'chicken'], vegetables: ['spinach'], eatWith: 'bread', maxDuration: 'long' }
+    const withSpinach = topDishes(input, NOV).filter((top) => top.some((d) => d.vegetables?.includes('spinach'))).length
+    expect(withSpinach).toBeGreaterThanOrEqual(90) // out of 100 random draws
+  })
+
   it('the same inputs do not always give the same three dishes (variety)', () => {
     const input: AskInput = { meal: 'ftour', available: ['meat', 'chicken'], eatWith: 'bread', maxDuration: 'long' }
     const seen = new Set(topDishes(input, NOV).flat().map((d) => d.id))

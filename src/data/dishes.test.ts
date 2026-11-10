@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import tableMd from '../../docs/dishes.md?raw'
 import dishesJson from './dishes.json'
-import { DURATIONS, EAT_WITH, FREQUENCIES, MEALS, PROTEINS, SEASONS, WEEKDAYS, type Dish } from '../domain/types'
+import { DURATIONS, EAT_WITH, FREQUENCIES, MEALS, PROTEINS, SEASONS, VEGETABLES, WEEKDAYS, type Dish } from '../domain/types'
 
 const dishes = dishesJson as Dish[]
 
@@ -19,8 +19,8 @@ describe('dishes.json', () => {
   })
 
   it('is in sync with the table: same ids and descriptions (run `npm run dishes` after editing the table)', () => {
-    expect(dishes.map((d) => d.id)).toEqual(tableRows.map((r) => r[12]))
-    expect(dishes.map((d) => d.description)).toEqual(tableRows.map((r) => r[10]))
+    expect(dishes.map((d) => d.id)).toEqual(tableRows.map((r) => r[13]))
+    expect(dishes.map((d) => d.description)).toEqual(tableRows.map((r) => r[11]))
   })
 
   it('gives every dish a short description', () => {
@@ -65,6 +65,13 @@ describe('dishes.json', () => {
     }
   })
 
+  it('has valid vegetables, without repeats', () => {
+    for (const d of dishes) {
+      for (const v of d.vegetables ?? []) expect(VEGETABLES, d.id).toContain(v)
+      expect(new Set(d.vegetables ?? []).size, d.id).toBe((d.vegetables ?? []).length)
+    }
+  })
+
   it('has valid favorite days', () => {
     for (const d of dishes) {
       for (const day of d.days ?? []) expect(WEEKDAYS, d.id).toContain(day)
@@ -73,7 +80,7 @@ describe('dishes.json', () => {
   })
 
   it('has no stray fields (user flags are not in the seed data)', () => {
-    const allowed = new Set(['id', 'name', 'meal', 'requires', 'eatWith', 'family', 'duration', 'season', 'fresh', 'frequency', 'heavy', 'description', 'days'])
+    const allowed = new Set(['id', 'name', 'meal', 'requires', 'eatWith', 'family', 'duration', 'season', 'fresh', 'vegetables', 'frequency', 'heavy', 'description', 'days'])
     for (const d of dishes) for (const k of Object.keys(d)) expect(allowed.has(k), `${d.id}.${k}`).toBe(true)
   })
 })

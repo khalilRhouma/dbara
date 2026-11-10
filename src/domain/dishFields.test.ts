@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { cleanDays, cleanRequires, diffFields, type DishFields } from './dishFields'
+import { cleanDays, cleanRequires, cleanVegetables, diffFields, type DishFields } from './dishFields'
 import type { Dish } from './types'
 
 const dish: Dish = {
@@ -9,7 +9,7 @@ const dish: Dish = {
 const fields = (o: Partial<DishFields> = {}): DishFields => ({
   name: dish.name, meal: dish.meal, requires: dish.requires, eatWith: dish.eatWith,
   family: dish.family, duration: dish.duration, season: dish.season, fresh: dish.fresh,
-  description: dish.description, days: dish.days, ...o,
+  description: dish.description, days: dish.days, vegetables: dish.vegetables, ...o,
 })
 
 describe('cleanRequires', () => {
@@ -75,5 +75,19 @@ describe('diffFields: frequency and heavy', () => {
       frequency: 'normal',
       heavy: false,
     })
+  })
+})
+
+describe('vegetables', () => {
+  it('cleanVegetables keeps the list order and removes repeats', () => {
+    expect(cleanVegetables(['carrot', 'potato', 'carrot'])).toEqual(['potato', 'carrot'])
+    expect(cleanVegetables(undefined)).toEqual([])
+  })
+  it('diffFields compares them as sets; missing means none', () => {
+    const base = { ...dish, vegetables: ['potato', 'carrot'] as Dish['vegetables'] }
+    expect(diffFields(base, fields({ vegetables: ['carrot', 'potato'] }))).toEqual({})
+    expect(diffFields(base, fields({ vegetables: ['potato'] }))).toEqual({ vegetables: ['potato'] })
+    expect(diffFields(base, fields({ vegetables: [] }))).toEqual({ vegetables: [] })
+    expect(diffFields({ ...dish, vegetables: undefined }, fields({ vegetables: [] }))).toEqual({})
   })
 })

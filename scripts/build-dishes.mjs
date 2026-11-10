@@ -13,6 +13,7 @@ const DURATION = { سريع: 'quick', عادي: 'normal', طويل: 'long' }
 const SEASON = { الكل: 'all', شتاء: 'winter', صيف: 'summer' }
 const PROTEIN = { لحم: 'meat', دجاج: 'chicken', سمك: 'fish', بيض: 'egg', تن: 'tuna' }
 const FREQUENCY = { برشا: 'often', عادي: 'normal', قليل: 'rare' }
+const VEGETABLE = { بطاطا: 'potato', قرعة: 'squash', سبناخ: 'spinach', جلبانة: 'peas', جزر: 'carrot', كرنب: 'cabbage', فلفل: 'pepper', لوبيا: 'beans', قناوية: 'okra' }
 const WEEKDAY = { الأحد: 0, الإثنين: 1, الاثنين: 1, الثلاثاء: 2, الأربعاء: 3, الخميس: 4, الجمعة: 5, السبت: 6 }
 
 const fail = (row, msg) => {
@@ -24,6 +25,11 @@ const pick = (map, key, row, what) => map[key] ?? fail(row, `unknown ${what} "${
 function parseRequires(text, row) {
   if (text.includes('بدون')) return [] // "none", or an optional protein
   return text.split('مع').map((group) => group.split('أو').map((p) => pick(PROTEIN, p.trim(), row, 'protein')))
+}
+
+function parseVegetables(text, row) {
+  if (text === '') return []
+  return [...new Set(text.split(/[،,]/).map((v) => pick(VEGETABLE, v.trim(), row, 'vegetable')))]
 }
 
 function parseDays(text, row) {
@@ -38,8 +44,8 @@ const rows = md
   .map((l) => l.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((c) => c.trim()))
 
 const dishes = rows.map((row) => {
-  if (row.length !== 13) fail(row, `expected 13 columns, found ${row.length}`)
-  const [name, meal, protein, eat, family, duration, season, fresh, heavy, frequency, description, days, id] = row
+  if (row.length !== 14) fail(row, `expected 14 columns, found ${row.length}`)
+  const [name, meal, protein, eat, family, duration, season, fresh, heavy, frequency, vegetables, description, days, id] = row
   if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(id)) fail(row, `bad id "${id}"`)
   const dish = {
     id,
@@ -57,6 +63,8 @@ const dishes = rows.map((row) => {
   const f = pick(FREQUENCY, frequency, row, 'frequency')
   if (f !== 'normal') dish.frequency = f
   if (heavy === 'نعم') dish.heavy = true
+  const veg = parseVegetables(vegetables, row)
+  if (veg.length > 0) dish.vegetables = veg
   const d = parseDays(days, row)
   if (d.length > 0) dish.days = d
   return dish

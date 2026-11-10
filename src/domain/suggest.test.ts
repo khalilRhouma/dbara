@@ -315,6 +315,43 @@ describe('light dinner', () => {
   })
 })
 
+describe('vegetables at home (optional question)', () => {
+  const potatoDish = dish('potato-dish', { vegetables: ['potato', 'pepper'] })
+  const spinachDish = dish('spinach-dish', { vegetables: ['spinach'] })
+  const plain = dish('plain')
+
+  it('a dish that uses one of the vegetables gets a bonus (once, however many match)', () => {
+    const r = run([potatoDish, spinachDish, plain], { input: { vegetables: ['potato', 'pepper'] } })
+    expect(scoreOf(r, 'potato-dish')).toBe(10 + W.usesAvailableVegetable)
+    expect(scoreOf(r, 'spinach-dish')).toBe(10)
+    expect(scoreOf(r, 'plain')).toBe(10)
+  })
+
+  it('is only a bonus: nothing is removed, whatever is selected', () => {
+    const r = run([potatoDish, spinachDish, plain], { input: { vegetables: ['carrot'] } })
+    expect(ids(r).sort()).toEqual(['plain', 'potato-dish', 'spinach-dish'])
+    expect(r.suggestions.every((s) => s.score === 10)).toBe(true)
+  })
+
+  it('does nothing when no vegetable is selected', () => {
+    for (const vegetables of [undefined, []]) {
+      expect(scoreOf(run([potatoDish], { input: { vegetables } }), 'potato-dish')).toBe(10)
+    }
+  })
+
+  it('puts the matching dish first and says why', () => {
+    const r = run([plain, potatoDish], { input: { vegetables: ['pepper'] } })
+    expect(ids(r)).toEqual(['potato-dish', 'plain'])
+    expect(r.suggestions[0].reason).toEqual({ kind: 'vegetable', vegetable: 'pepper' })
+  })
+
+  it('beats the "everyday dish" bonus at lunch', () => {
+    const everyday = dish('everyday', { frequency: 'often' })
+    const r = run([everyday, spinachDish], { input: { meal: 'ftour', vegetables: ['spinach'] } })
+    expect(ids(r)[0]).toBe('spinach-dish')
+  })
+})
+
 describe('weekday habit', () => {
   // NOW is a Tuesday (2)
   it('adds points on a liked day', () => {

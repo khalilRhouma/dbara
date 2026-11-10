@@ -1,5 +1,5 @@
 import type { DishEdit } from '../storage/schemas'
-import type { Dish, Protein, Weekday } from './types'
+import { VEGETABLES, type Dish, type Protein, type Vegetable, type Weekday } from './types'
 
 /** The fields the dish form edits. (favorite and hidden have their own buttons in the list.) */
 export type DishFields = Pick<
@@ -12,6 +12,7 @@ export type DishFields = Pick<
   | 'duration'
   | 'season'
   | 'fresh'
+  | 'vegetables'
   | 'frequency'
   | 'heavy'
   | 'description'
@@ -38,6 +39,12 @@ export function cleanDays(days: Weekday[] | undefined): Weekday[] {
   return [...new Set(days ?? [])].sort((a, b) => a - b)
 }
 
+/** Vegetables in the fixed list order, without repeats. */
+export function cleanVegetables(list: Vegetable[] | undefined): Vegetable[] {
+  const set = new Set(list ?? [])
+  return VEGETABLES.filter((v) => set.has(v))
+}
+
 /** Only the fields that changed. This is what is saved as the user's edit of a built-in dish. */
 export function diffFields(current: Dish, next: DishFields): DishEdit {
   const edit: Record<string, unknown> = {}
@@ -53,6 +60,7 @@ export function diffFields(current: Dish, next: DishFields): DishEdit {
   compare('duration', current.duration, next.duration)
   compare('season', current.season, next.season)
   compare('fresh', current.fresh, next.fresh)
+  compare('vegetables', cleanVegetables(current.vegetables), cleanVegetables(next.vegetables))
   compare('frequency', current.frequency ?? 'normal', next.frequency ?? 'normal')
   compare('heavy', current.heavy ?? false, next.heavy ?? false)
   // "no description" and "no days" are stored as '' and [] so that clearing a built-in value works.

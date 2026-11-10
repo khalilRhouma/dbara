@@ -79,6 +79,7 @@ interface Dish {
   duration: Duration;
   season: Season;
   fresh: boolean;             // تحتاج حوتا أو خضرة من السوق
+  vegetables?: ('potato'|'squash'|'spinach'|'peas'|'carrot'|'cabbage'|'pepper'|'beans'|'okra')[]; // الخضر الأساسية
   frequency?: 'often'|'normal'|'rare'; // كم مرة تطبخوها: برشا، عادي، من وقت لوقت
   heavy?: boolean;           // دسمة وثقيلة، ما تنفعش للعشاء
   description?: string;       // المكونات الأساسية، تظهر على البطاقة
@@ -101,6 +102,7 @@ interface Settings {
 interface AskInput {
   meal: Meal;
   available: Protein[];       // فارغة = بدون
+  vegetables?: Vegetable[];   // اختياري: الخضر المتوفرة في البيت
   eatWith: EatWith | 'any';
   maxDuration: Duration;      // الافتراضي 'long' = لا قيد
 }
@@ -135,6 +137,7 @@ interface AskInput {
 | نفس عائلة طبخة منذ يومين | −2 |
 | مفضلة | +3 |
 | تستعمل بروتينا متوفرا | +1 |
+| تستعمل خضرة قال المستعمل إنها متوفرة (سؤال اختياري، مكافأة فقط وليس منعا) | +4 |
 | فصلها يطابق الفصل الحالي | +2 |
 | فصلها عكس الفصل الحالي | −5 (أولوية فقط وليست منعا) |
 | طبخة عادية في البيت (تكرار: برشا)، في الغداء فقط | +3 |

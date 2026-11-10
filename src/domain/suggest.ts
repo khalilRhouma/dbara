@@ -1,5 +1,5 @@
 import { daysBetween, daysSinceMarketDay, seasonOf, toISODate } from './dates'
-import type { AskInput, Dish, Duration, HistoryEntry, Protein, Settings, Weekday } from './types'
+import type { AskInput, Dish, Duration, HistoryEntry, Protein, Settings, Vegetable, Weekday } from './types'
 
 // All tunable numbers live here. The plan says the weights are estimates
 // and will be adjusted after two weeks of real use.
@@ -21,6 +21,8 @@ export const CONFIG = {
     familyTwoDaysAgo: -2,
     favorite: +3,
     usesAvailableProtein: +1,
+    // Optional question: the family says which vegetables are at home. A bonus, never a filter.
+    usesAvailableVegetable: +4,
     // Season is a priority, not a rule: any dish can be cooked in any season.
     seasonMatch: +2,
     seasonOpposite: -5,
@@ -52,6 +54,7 @@ const DURATION_RANK: Record<Duration, number> = { quick: 0, normal: 1, long: 2 }
 
 /** Why a dish is shown. The UI turns this into a short Arabic sentence. */
 export type Reason =
+  | { kind: 'vegetable'; vegetable: Vegetable }
   | { kind: 'weekday'; day: Weekday }
   | { kind: 'notCookedFor'; days: number }
   | { kind: 'neverCooked' }
@@ -139,6 +142,7 @@ function rank(
   }
   const weekday = now.getDay() as Weekday
   const isWeekend = CONFIG.weekendDays.includes(weekday)
+  const wantedVegetables = new Set<Vegetable>(input.vegetables ?? [])
 
   const marketDaysSince = settings.marketDay === null ? null : daysSinceMarketDay(now, settings.marketDay)
   const w = CONFIG.weights
@@ -191,6 +195,8 @@ function rank(
       else if (dish.duration === 'quick') score += w.weekendQuick
       if (dish.heavy && input.meal === 'ftour') score += w.weekendHeavyAtLunch
     }
+    const matchedVegetable = dish.vegetables?.find((v) => wantedVegetables.has(v))
+    if (matchedVegetable) score += w.usesAvailableVegetable
     if (dish.days?.includes(weekday)) score += w.favoriteDay
     if (definiteProteins(dish).some((p) => recentProteins.has(p))) score += w.sameProteinAsRecent
 
@@ -198,7 +204,8 @@ function rank(
 
     // One short reason, most useful first. "Never cooked" is skipped while the history is empty.
     let reason: Reason | null = null
-    if (dish.days?.includes(weekday)) reason = { kind: 'weekday', day: weekday }
+    if (matchedVegetable) reason = { kind: 'vegetable', vegetable: matchedVegetable }
+    else if (dish.days?.includes(weekday)) reason = { kind: 'weekday', day: weekday }
     else if (ago !== undefined && ago >= 8) reason = { kind: 'notCookedFor', days: ago }
     else if (ago === undefined && history.length > 0) reason = { kind: 'neverCooked' }
     else if (dish.fresh && marketDaysSince !== null && marketDaysSince <= 1) reason = { kind: 'freshMarket' }

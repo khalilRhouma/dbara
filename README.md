@@ -34,8 +34,8 @@ Dbara does exactly that, in about two taps.
 
 ## Features
 
-- **Four quick questions, no typing.** Meal, protein you have, how you eat, time. The meal is
-  chosen from the clock, and your last answers are remembered.
+- **Quick questions, no typing.** Meal, protein you have, vegetables at home (optional), how you eat, time.
+  The meal is chosen from the clock, and your last answers are remembered.
 - **Three suggestions with a reason**, such as "not cooked for 11 days" or "fresh from the market".
   "غيرها" shows the next three.
 - **Remembers what you cooked** (and "we had leftovers" in one tap). It will not suggest the same dish for 3 days, and it avoids
@@ -87,6 +87,7 @@ The rules are one pure function with all the numbers in one place:
    | Heavy dish, at dinner | −4 |
    | Weekend (Fri, Sat, Sun): long dish, or heavy dish at lunch | +2 |
    | Weekend: quick dish | −1 |
+   | Uses a vegetable you have at home (optional question) | +4 |
    | Favorite | +3 |
    | Today is one of the dish's favorite days | +4 |
    | Matches the season | +2 |

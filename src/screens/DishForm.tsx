@@ -2,8 +2,8 @@ import { Calendar, Check, Flame, Plus, ShoppingBasket, Snowflake, Sun, Utensils 
 import { useState } from 'react'
 import { Choice } from '../components/Choice'
 import { DURATION_ICON, EAT_WITH_ICON, MEAL_ICON, PROTEIN_ICON } from '../components/icons'
-import { cleanDays, cleanRequires, type DishFields } from '../domain/dishFields'
-import { DURATIONS, EAT_WITH, FREQUENCIES, MEALS, PROTEINS, SEASONS, WEEKDAYS, type Dish, type Protein } from '../domain/types'
+import { cleanDays, cleanRequires, cleanVegetables, type DishFields } from '../domain/dishFields'
+import { DURATIONS, EAT_WITH, FREQUENCIES, MEALS, PROTEINS, SEASONS, VEGETABLES, WEEKDAYS, type Dish, type Protein, type Vegetable } from '../domain/types'
 import { ar } from '../i18n/ar'
 
 interface Props {
@@ -29,6 +29,7 @@ export function DishForm({ initial, families, onSave, onCancel, onReset }: Props
     duration: initial?.duration ?? 'normal',
     season: initial?.season ?? 'all',
     fresh: initial?.fresh ?? false,
+    vegetables: initial?.vegetables ?? [],
     frequency: initial?.frequency ?? 'normal',
     heavy: initial?.heavy ?? false,
     description: initial?.description ?? '',
@@ -57,6 +58,7 @@ export function DishForm({ initial, families, onSave, onCancel, onReset }: Props
             requires: cleanRequires(fields.requires),
             description: (fields.description ?? '').trim(),
             days: cleanDays(fields.days),
+            vegetables: cleanVegetables(fields.vegetables),
           })
       }}
     >
@@ -135,6 +137,15 @@ export function DishForm({ initial, families, onSave, onCancel, onReset }: Props
         options={SEASONS.map((s) => ({ value: s, label: ar.dishes.seasons[s], icon: SEASON_ICON[s] }))}
         isSelected={(s) => fields.season === s}
         onSelect={(s) => set('season', s)}
+      />
+
+      <Choice<Vegetable>
+        label={t.vegetables}
+        options={VEGETABLES.map((v) => ({ value: v, label: ar.ask.vegetableNames[v] }))}
+        isSelected={(v) => (fields.vegetables ?? []).includes(v)}
+        onSelect={(v) =>
+          set('vegetables', (fields.vegetables ?? []).includes(v) ? (fields.vegetables ?? []).filter((x) => x !== v) : [...(fields.vegetables ?? []), v])
+        }
       />
 
       <Choice

@@ -1,9 +1,21 @@
 // كل نصوص الواجهة في ملف واحد (الدارجة التونسية).
-import type { Duration, EatWith, Frequency, Meal, Protein, Season } from '../domain/types'
+import type { Duration, EatWith, Frequency, Meal, Protein, Season, Vegetable } from '../domain/types'
 import type { Reason, Relaxed } from '../domain/suggest'
 
 const meals: Record<Meal, string> = { ftour: 'فطور', acha: 'عشاء' }
 const proteins: Record<Protein, string> = { meat: 'لحم', chicken: 'دجاج', fish: 'سمك', egg: 'بيض', tuna: 'تن' }
+/** Vegetables, as people say them in Tunisia. */
+export const vegetables: Record<Vegetable, string> = {
+  potato: 'بطاطا',
+  squash: 'قرعة',
+  spinach: 'سبناخ',
+  peas: 'جلبانة',
+  carrot: 'جزر',
+  cabbage: 'كرنب',
+  pepper: 'فلفل',
+  beans: 'لوبيا',
+  okra: 'قناوية',
+}
 const eatWith: Record<EatWith | 'any', string> = { spoon: 'بالملعقة', bread: 'بالخبز', any: 'ما يهمش' }
 const durationsAsk: Record<Duration, string> = { quick: 'سريع', normal: 'عادي', long: 'على مهل' }
 const durationsCard: Record<Duration, string> = { quick: 'سريعة', normal: 'عادية', long: 'طويلة' }
@@ -32,6 +44,7 @@ export const ar = {
     meal: 'الوجبة',
     protein: 'شنوة عندك؟',
     noProtein: 'بدون',
+    vegetables: 'خضر عندك؟ (اختياري)',
     eatWith: 'كيفاش تاكلوها؟',
     time: 'الوقت',
     lead: 'جاوب على أسئلة صغار ونقترحو عليك.',
@@ -39,6 +52,7 @@ export const ar = {
     leftovers: 'عندنا باقي',
     meals,
     proteins,
+    vegetableNames: vegetables,
     eatWithOptions: eatWith,
     durations: durationsAsk,
   },
@@ -96,6 +110,7 @@ export const ar = {
       duration: 'مدة التحضير',
       season: 'الفصل',
       fresh: 'تحتاج حوت أو خضرة من السوق',
+      vegetables: 'الخضر الأساسية (اختياري)',
       frequency: 'كم مرة تطبخوها؟',
       heavy: 'دسمة وثقيلة (ما تنفعش للعشاء)',
       description: 'المكونات الأساسية',
@@ -144,6 +159,8 @@ export function relaxedText(r: Relaxed): string {
 /** One short sentence saying why a dish is suggested. */
 export function reasonText(r: Reason): string {
   switch (r.kind) {
+    case 'vegetable':
+      return `فيها ${vegetables[r.vegetable]} من عندكم`
     case 'weekday':
       return `عادتكم نهار ${ar.settings.weekdays[r.day]}`
     case 'notCookedFor':
