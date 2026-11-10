@@ -188,8 +188,11 @@
     "duration": "normal",
     "season": "winter",
     "fresh": false,
-    "description": "مقرونة في مرق خفيف، طماطم، لحم أو دجاج",
-    "frequency": "rare"
+    "description": "مقرونة في مرق خفيف، طماطم، لحم أو دجاج، كرافص",
+    "frequency": "rare",
+    "vegetables": [
+      "celery"
+    ]
   },
   {
     "id": "nwasser-chicken",
@@ -223,8 +226,11 @@
     "duration": "normal",
     "season": "all",
     "fresh": false,
-    "description": "دويدة (عجين صغير)، دجاج، مرق بالطماطم",
-    "frequency": "rare"
+    "description": "دويدة (عجين صغير)، دجاج، مرق بالطماطم، كرافص",
+    "frequency": "rare",
+    "vegetables": [
+      "celery"
+    ]
   },
   {
     "id": "hlalem",
@@ -240,9 +246,12 @@
     "duration": "long",
     "season": "winter",
     "fresh": false,
-    "description": "حلالم (عجين رقيق)، لحم، حمص، مرق",
+    "description": "حلالم (عجين رقيق)، لحم، حمص، مرق، كرافص",
     "frequency": "rare",
-    "heavy": true
+    "heavy": true,
+    "vegetables": [
+      "celery"
+    ]
   },
   {
     "id": "mhamsa",
@@ -332,8 +341,11 @@
     "duration": "normal",
     "season": "winter",
     "fresh": false,
-    "description": "فريك (قمح أخضر مدشّش)، لحم، طماطم، حمص",
-    "frequency": "rare"
+    "description": "فريك (قمح أخضر مدشّش)، لحم، طماطم، حمص، كرافص",
+    "frequency": "rare",
+    "vegetables": [
+      "celery"
+    ]
   },
   {
     "id": "chorba-lsan-asfour-chicken",
@@ -349,8 +361,11 @@
     "duration": "normal",
     "season": "all",
     "fresh": false,
-    "description": "لسان عصفور (عجين صغير)، دجاج، طماطم، نعناع",
-    "frequency": "rare"
+    "description": "لسان عصفور (عجين صغير)، دجاج، طماطم، نعناع، كرافص",
+    "frequency": "rare",
+    "vegetables": [
+      "celery"
+    ]
   },
   {
     "id": "chorba-fish",
@@ -366,8 +381,11 @@
     "duration": "normal",
     "season": "all",
     "fresh": true,
-    "description": "حوت، طماطم، عجين صغير، توابل",
-    "frequency": "rare"
+    "description": "حوت، طماطم، عجين صغير، توابل، كرافص",
+    "frequency": "rare",
+    "vegetables": [
+      "celery"
+    ]
   },
   {
     "id": "chorba-vegetables",
@@ -379,12 +397,13 @@
     "duration": "normal",
     "season": "winter",
     "fresh": true,
-    "description": "خضرة مشكلة (جزر، بطاطا، كرنب)، طماطم",
+    "description": "خضرة مشكلة (جزر، بطاطا، كرنب)، طماطم، كرافص",
     "frequency": "rare",
     "vegetables": [
       "carrot",
       "potato",
-      "cabbage"
+      "cabbage",
+      "celery"
     ]
   },
   {
@@ -410,11 +429,12 @@
     "duration": "normal",
     "season": "winter",
     "fresh": false,
-    "description": "عدس، جزر، بصل، كمون، طماطم",
+    "description": "عدس، جزر، بصل، كمون، طماطم، كرافص",
     "frequency": "rare",
     "vegetables": [
       "carrot",
-      "onion"
+      "onion",
+      "celery"
     ]
   },
   {
