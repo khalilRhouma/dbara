@@ -87,6 +87,18 @@ describe('history', () => {
     expect(store.getHistory().map((e) => e.dishId)).toEqual(['b', 'c', 'a'])
   })
 
+  it('returns entries sorted even if they were stored in another order', () => {
+    storage.setItem(
+      KEYS.history,
+      JSON.stringify([
+        { date: '2026-11-10', meal: 'acha', dishId: 'c' },
+        { date: '2026-11-08', meal: 'acha', dishId: 'a' },
+        { date: '2026-11-10', meal: 'ftour', dishId: 'b' },
+      ]),
+    )
+    expect(store.getHistory().map((e) => e.dishId)).toEqual(['a', 'b', 'c'])
+  })
+
   it('replaces the entry of the same day and meal', () => {
     store.addHistory({ date: '2026-11-10', meal: 'acha', dishId: 'a' })
     store.addHistory({ date: '2026-11-10', meal: 'acha', dishId: 'b' })

@@ -98,7 +98,7 @@ export function createStore(storage: StorageLike, seed: Dish[], opts: { newId?: 
   const sortHistory = (h: HistoryEntry[]) =>
     [...h].sort((a, b) => a.date.localeCompare(b.date) || MEAL_ORDER[a.meal] - MEAL_ORDER[b.meal])
 
-  /** Oldest first. Entries that fail validation are dropped (and the raw text is kept aside). */
+  /** Oldest first, whatever order was stored. Entries that fail validation are dropped (and the raw text is kept aside). */
   function getHistory(): HistoryEntry[] {
     const parsed = readJson(KEYS.history)
     if (!Array.isArray(parsed)) {
@@ -111,7 +111,7 @@ export function createStore(storage: StorageLike, seed: Dish[], opts: { newId?: 
       if (r.success) good.push(r.output)
     }
     if (good.length !== parsed.length) quarantine(KEYS.history, JSON.stringify(parsed))
-    return good
+    return sortHistory(good)
   }
 
   /** One entry per day and meal: adding again for the same day and meal replaces the old one. */
