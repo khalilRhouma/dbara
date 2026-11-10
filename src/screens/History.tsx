@@ -4,7 +4,7 @@ import { Choice } from '../components/Choice'
 import { EmptyState } from '../components/EmptyState'
 import { MEAL_ICON } from '../components/icons'
 import { daysBetween, defaultMeal, toISODate } from '../domain/dates'
-import { MEALS, type Meal } from '../domain/types'
+import { LEFTOVERS_ID, MEALS, type Meal } from '../domain/types'
 import { ar } from '../i18n/ar'
 import { store } from '../storage/instance'
 
@@ -36,7 +36,7 @@ export function History() {
             return (
             <li key={`${e.date}|${e.meal}`} className="card row" style={{ '--i': Math.min(i, 8) } as CSSProperties}>
               <span>
-                <strong>{names.get(e.dishId) ?? ar.history.unknownDish}</strong>
+                <strong>{e.dishId === LEFTOVERS_ID ? ar.history.leftovers : (names.get(e.dishId) ?? ar.history.unknownDish)}</strong>
                 <span className="tags">
                   <span className="tag" dir="ltr">{e.date}</span>
                   <span className="tag">
@@ -114,6 +114,7 @@ function AddEntry({ today, dishes, onDone }: { today: string; dishes: { id: stri
         <label htmlFor="h-dish">{ar.history.dish}</label>
         <select id="h-dish" value={dishId} onChange={(e) => setDishId(e.target.value)}>
           <option value="" />
+          <option value={LEFTOVERS_ID}>{ar.history.leftovers}</option>
           {sorted.map((d) => (
             <option key={d.id} value={d.id}>
               {d.name}

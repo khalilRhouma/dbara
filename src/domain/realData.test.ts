@@ -61,6 +61,22 @@ describe('with the real dish list', () => {
     }
   })
 
+  it('soup is not pushed down at dinner, and the winter soup comes more often in winter than in summer', () => {
+    const everything: AskInput = { meal: 'acha', available: ['meat', 'chicken', 'egg', 'tuna', 'fish'], eatWith: 'any', maxDuration: 'long' }
+    // "chorba-vegetables" is marked winter; it is "from time to time" at lunch but a normal light dinner
+    const appears = (now: Date) => topDishes(everything, now, 6).filter((top) => top.some((d) => d.id === 'chorba-vegetables')).length
+    expect(appears(NOV)).toBeGreaterThanOrEqual(20) // at least 1 time in 5 (out of 100 random draws)
+    expect(appears(NOV)).toBeGreaterThan(appears(JUL))
+  })
+
+  it('on a Friday lunch, a long dish is among the top three more often than on a Tuesday', () => {
+    const friday = new Date(2026, 3, 17, 12)
+    const tuesday = new Date(2026, 3, 14, 12)
+    const input: AskInput = { meal: 'ftour', available: ['meat', 'chicken', 'fish', 'egg', 'tuna'], eatWith: 'any', maxDuration: 'long' }
+    const longTop = (now: Date) => topDishes(input, now).flat().filter((d) => d.duration === 'long').length
+    expect(longTop(friday)).toBeGreaterThan(longTop(tuesday))
+  })
+
   it('the same inputs do not always give the same three dishes (variety)', () => {
     const input: AskInput = { meal: 'ftour', available: ['meat', 'chicken'], eatWith: 'bread', maxDuration: 'long' }
     const seen = new Set(topDishes(input, NOV).flat().map((d) => d.id))

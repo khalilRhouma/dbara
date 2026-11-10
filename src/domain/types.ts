@@ -40,6 +40,9 @@ export interface Dish {
   custom?: boolean // added by the user
 }
 
+/** History entry for "we ate the leftovers": not a dish, so it is never suggested and never blocks anything. */
+export const LEFTOVERS_ID = 'leftovers'
+
 export interface HistoryEntry {
   date: string // YYYY-MM-DD, local time
   meal: Meal

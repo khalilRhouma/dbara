@@ -5,15 +5,18 @@ import type { AskInput, Dish, Duration, HistoryEntry, Protein, Settings, Weekday
 // and will be adjusted after two weeks of real use.
 export const CONFIG = {
   /** A dish cooked within this many days (0 = today) is removed. */
-  blockDays: 3,
+  blockDays: 3, // the family waits about 3 to 4 days before cooking the same dish again
   /** Dishes cooked within this many days count for the "same protein" rule (0 = today, 1 = yesterday). */
   proteinRecentDays: 1,
+  /** Days that count as the weekend, like Date.getDay(): Friday, Saturday, Sunday. */
+  weekendDays: [5, 6, 0] as readonly number[],
   baseScore: 10,
   /** Fewer results than this → relax constraints. Also the page size shown to the user. */
   minResults: 3,
   weights: {
-    cooked4to7DaysAgo: -6,
-    cooked8to14DaysAgo: -2,
+    // After the 3 blocked days the dish may come back; it only loses a few points for a while.
+    cooked4to7DaysAgo: -3,
+    cooked8to14DaysAgo: -1,
     familyTodayOrYesterday: -5,
     familyTwoDaysAgo: -2,
     favorite: +3,
@@ -21,12 +24,17 @@ export const CONFIG = {
     // Season is a priority, not a rule: any dish can be cooked in any season.
     seasonMatch: +2,
     seasonOpposite: -5,
-    // How common the dish is at home. Everyday dishes come first, "from time to time" dishes
-    // (soups, jariya...) come after, even in their own season.
+    // How common the dish is at home, for lunch only: everyday dishes come first and
+    // "from time to time" dishes (jariya pasta, soups...) come after, even in their own season.
+    // At dinner these two rules do not apply: soup, eggs and tuna are all normal light dinners.
     often: +3,
     rare: -3,
     // Dinner at home is usually light.
     heavyAtDinner: -4,
+    // Weekend (see weekendDays): longer and richer dishes at lunch, fewer quick ones.
+    weekendLong: +2,
+    weekendHeavyAtLunch: +2,
+    weekendQuick: -1,
     favoriteDay: +4, // the dish is liked on today's weekday (e.g. couscous on Friday)
     sameProteinAsRecent: -2, // same main protein as today's or yesterday's dish
     freshNearMarket: +3, // market day or the day after
@@ -130,6 +138,7 @@ function rank(
     if (d && ago <= CONFIG.proteinRecentDays) for (const p of definiteProteins(d)) recentProteins.add(p)
   }
   const weekday = now.getDay() as Weekday
+  const isWeekend = CONFIG.weekendDays.includes(weekday)
 
   const marketDaysSince = settings.marketDay === null ? null : daysSinceMarketDay(now, settings.marketDay)
   const w = CONFIG.weights
@@ -171,9 +180,17 @@ function rank(
       else if (marketDaysSince >= 4) score += w.freshFarFromMarket
     }
 
-    if (dish.frequency === 'often') score += w.often
-    else if (dish.frequency === 'rare') score += w.rare
+    // How common a dish is only matters at lunch. At dinner everything light is on the same level.
+    if (input.meal === 'ftour') {
+      if (dish.frequency === 'often') score += w.often
+      else if (dish.frequency === 'rare') score += w.rare
+    }
     if (dish.heavy && input.meal === 'acha') score += w.heavyAtDinner
+    if (isWeekend) {
+      if (dish.duration === 'long') score += w.weekendLong
+      else if (dish.duration === 'quick') score += w.weekendQuick
+      if (dish.heavy && input.meal === 'ftour') score += w.weekendHeavyAtLunch
+    }
     if (dish.days?.includes(weekday)) score += w.favoriteDay
     if (definiteProteins(dish).some((p) => recentProteins.has(p))) score += w.sameProteinAsRecent
 

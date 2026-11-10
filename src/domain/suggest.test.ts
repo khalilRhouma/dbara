@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import dishesJson from '../data/dishes.json'
 import { toISODate } from './dates'
 import { CONFIG, pageOf, suggest, type Reason } from './suggest'
-import type { AskInput, Dish, HistoryEntry, Settings } from './types'
+import { LEFTOVERS_ID, type AskInput, type Dish, type HistoryEntry, type Settings } from './types'
 
 // 2026-04-14 is a Tuesday in a neutral month (no season rule applies), so each test
 // isolates one rule. A plain dish scores exactly CONFIG.baseScore (10) when rng() = 0.
@@ -233,17 +233,72 @@ describe('season is a priority, not a rule', () => {
 })
 
 describe('how common the dish is', () => {
-  it('everyday dishes get a bonus, "from time to time" dishes a penalty, normal ones nothing', () => {
-    const r = run([dish('often', { frequency: 'often' }), dish('rare', { frequency: 'rare' }), dish('normal', { frequency: 'normal' }), dish('unset')])
+  const lunch = { meal: 'ftour' } as const
+  it('at lunch: everyday dishes get a bonus, "from time to time" dishes a penalty, normal ones nothing', () => {
+    const r = run([dish('often', { frequency: 'often' }), dish('rare', { frequency: 'rare' }), dish('normal', { frequency: 'normal' }), dish('unset')], { input: lunch })
     expect(scoreOf(r, 'often')).toBe(10 + W.often)
     expect(scoreOf(r, 'rare')).toBe(10 + W.rare)
     expect(scoreOf(r, 'normal')).toBe(10)
     expect(scoreOf(r, 'unset')).toBe(10)
   })
 
-  it('a rare dish in its own season still ranks below an everyday dish', () => {
-    const r = run([dish('jariya', { season: 'winter', frequency: 'rare' }), dish('couscous', { frequency: 'often' })], { now: new Date(2026, 0, 14, 12) })
+  it('at dinner: how common a dish is does not matter (soups are normal light dinners)', () => {
+    const r = run([dish('often', { frequency: 'often' }), dish('rare', { frequency: 'rare' })], { input: { meal: 'acha' } })
+    expect(scoreOf(r, 'rare')).toBe(10)
+    expect(scoreOf(r, 'often')).toBe(10)
+  })
+
+  it('a rare dish in its own season still ranks below an everyday dish at lunch', () => {
+    const r = run([dish('jariya', { season: 'winter', frequency: 'rare' }), dish('couscous', { frequency: 'often' })], {
+      input: lunch,
+      now: new Date(2026, 0, 14, 12),
+    })
     expect(ids(r)).toEqual(['couscous', 'jariya'])
+  })
+
+  it('a winter soup beats an ordinary dish at a winter dinner', () => {
+    const r = run([dish('soup', { season: 'winter', frequency: 'rare' }), dish('plain')], { input: { meal: 'acha' }, now: new Date(2026, 0, 14, 12) })
+    expect(ids(r)).toEqual(['soup', 'plain'])
+  })
+})
+
+describe('weekend', () => {
+  // 2026-04-17 is a Friday; the 18th Saturday, the 19th Sunday, the 20th Monday.
+  const day = (d: number) => new Date(2026, 3, d, 12)
+  const longDish = dish('long', { duration: 'long' })
+  const quickDish = dish('quick', { duration: 'quick' })
+  const heavyDish = dish('heavy', { heavy: true })
+
+  it('Friday, Saturday and Sunday: long dishes +2, quick dishes -1', () => {
+    for (const d of [17, 18, 19]) {
+      const r = run([longDish, quickDish, dish('normal')], { now: day(d), input: { meal: 'ftour' } })
+      expect(scoreOf(r, 'long'), `day ${d}`).toBe(10 + W.weekendLong)
+      expect(scoreOf(r, 'quick'), `day ${d}`).toBe(10 + W.weekendQuick)
+      expect(scoreOf(r, 'normal'), `day ${d}`).toBe(10)
+    }
+  })
+
+  it('Monday to Thursday: no weekend effect', () => {
+    for (const d of [14, 15, 16, 20]) {
+      const r = run([longDish, quickDish], { now: day(d), input: { meal: 'ftour' } })
+      expect(scoreOf(r, 'long'), `day ${d}`).toBe(10)
+      expect(scoreOf(r, 'quick'), `day ${d}`).toBe(10)
+    }
+  })
+
+  it('heavy dishes get a bonus at weekend lunch, and still lose points at weekend dinner', () => {
+    expect(scoreOf(run([heavyDish], { now: day(18), input: { meal: 'ftour' } }), 'heavy')).toBe(10 + W.weekendHeavyAtLunch)
+    expect(scoreOf(run([heavyDish], { now: day(18), input: { meal: 'acha' } }), 'heavy')).toBe(10 + W.heavyAtDinner)
+    expect(scoreOf(run([heavyDish], { now: day(14), input: { meal: 'ftour' } }), 'heavy')).toBe(10)
+  })
+})
+
+describe('leftovers', () => {
+  it('a "leftovers" history entry is not a dish: it blocks nothing and changes no score', () => {
+    const entry = { date: ago(1), meal: 'ftour' as const, dishId: LEFTOVERS_ID }
+    const r = run([dish('a'), dish('b')], { history: [entry] })
+    expect(ids(r)).toEqual(['a', 'b'])
+    expect(scoreOf(r, 'a')).toBe(10)
   })
 })
 

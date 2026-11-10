@@ -1,7 +1,7 @@
 import { ChefHat } from 'lucide-react'
 import { useState } from 'react'
 import { toISODate } from './domain/dates'
-import type { AskInput, Dish } from './domain/types'
+import { LEFTOVERS_ID, type AskInput, type Dish, type Meal } from './domain/types'
 import { ar } from './i18n/ar'
 import { TABS, type TabId } from './nav'
 import { Ask } from './screens/Ask'
@@ -28,6 +28,12 @@ export default function App() {
     setTab('history')
   }
 
+  function leftovers(meal: Meal) {
+    store.addHistory({ date: toISODate(new Date()), meal, dishId: LEFTOVERS_ID })
+    setAsked(null)
+    setTab('history')
+  }
+
   return (
     <div className="app">
       <header className="topbar">
@@ -41,7 +47,7 @@ export default function App() {
           (asked ? (
             <Suggestions input={asked} onPick={pick} onBack={() => setAsked(null)} />
           ) : (
-            <Ask onSubmit={setAsked} />
+            <Ask onSubmit={setAsked} onLeftovers={leftovers} />
           ))}
         {tab === 'history' && <History />}
         {tab === 'dishes' && <Dishes />}

@@ -36,6 +36,7 @@ export const ar = {
     time: 'الوقت',
     lead: 'جاوب على أسئلة صغار ونقترحو عليك.',
     submit: 'اقترح عليّ',
+    leftovers: 'عندنا باقي',
     meals,
     proteins,
     eatWithOptions: eatWith,
@@ -55,6 +56,7 @@ export const ar = {
   history: {
     empty: 'ما فما حتى طبخة مسجلة.',
     unknownDish: 'طبخة محذوفة',
+    leftovers: 'باقي أكل',
     lastDays: 'آخر 30 يوم',
     remove: 'حذف',
     removeConfirm: 'تحذف هذا السطر من السجل؟',

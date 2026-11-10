@@ -1,4 +1,4 @@
-import { Ban, Sparkles } from 'lucide-react'
+import { Ban, Recycle, Sparkles } from 'lucide-react'
 import { useState } from 'react'
 import { Choice } from '../components/Choice'
 import { DURATION_ICON, EAT_WITH_ICON, MEAL_ICON, PROTEIN_ICON } from '../components/icons'
@@ -9,9 +9,11 @@ import { store } from '../storage/instance'
 
 interface Props {
   onSubmit: (input: AskInput) => void
+  /** "We have leftovers": record that meal without choosing a dish. */
+  onLeftovers: (meal: AskInput['meal']) => void
 }
 
-export function Ask({ onSubmit }: Props) {
+export function Ask({ onSubmit, onLeftovers }: Props) {
   // Meal comes from the clock; protein and eat-with come from the last time.
   const [input, setInput] = useState<AskInput>(() => {
     const last = store.getLastChoices()
@@ -71,6 +73,10 @@ export function Ask({ onSubmit }: Props) {
       <button type="button" className="primary" onClick={submit}>
         <Sparkles size={22} aria-hidden />
         {ar.ask.submit}
+      </button>
+      <button type="button" className="secondary wide" onClick={() => onLeftovers(input.meal)}>
+        <Recycle size={18} aria-hidden />
+        {ar.ask.leftovers}
       </button>
     </section>
   )

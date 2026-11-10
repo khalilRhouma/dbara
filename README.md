@@ -38,9 +38,9 @@ Dbara does exactly that, in about two taps.
   chosen from the clock, and your last answers are remembered.
 - **Three suggestions with a reason**, such as "not cooked for 11 days" or "fresh from the market".
   "غيرها" shows the next three.
-- **Remembers what you cooked.** It will not suggest the same dish for 3 days, and it avoids
+- **Remembers what you cooked** (and "we had leftovers" in one tap). It will not suggest the same dish for 3 days, and it avoids
   the same family of dishes (pasta after pasta).
-- **Knows how your family eats.** Everyday dishes come first, soups and jariya pasta come after (and a bit more in winter), and dinner stays light. Set a favorite day for a dish, such as couscous on Friday.
+- **Knows how your family eats.** At lunch everyday dishes come first and soups or jariya pasta come after (a bit more in winter). Dinner stays light, and weekends favor longer, richer dishes. Set a favorite day for a dish, such as couscous on Friday.
 - **Knows market day.** Dishes that need fresh fish or vegetables are preferred right after you shop.
 - **Your own dish list.** 55 Tunisian dishes to start, each with a short list of its main components. Add, edit, favorite or hide any of them.
 - **Private by design.** No account and no server. Everything stays in your phone's browser.
@@ -78,13 +78,15 @@ The rules are one pure function with all the numbers in one place:
 
    | Rule | Points |
    |---|---|
-   | Cooked 4 to 7 days ago | −6 |
-   | Cooked 8 to 14 days ago | −2 |
+   | Cooked 4 to 7 days ago | −3 |
+   | Cooked 8 to 14 days ago | −1 |
    | Same family as yesterday's dish | −5 |
    | Same main protein as today's or yesterday's dish | −2 |
-   | Everyday dish (marked "often") | +3 |
-   | "From time to time" dish (soups, jariya pasta) | −3 |
+   | Everyday dish (marked "often"), at lunch | +3 |
+   | "From time to time" dish (soups, jariya pasta), at lunch | −3 |
    | Heavy dish, at dinner | −4 |
+   | Weekend (Fri, Sat, Sun): long dish, or heavy dish at lunch | +2 |
+   | Weekend: quick dish | −1 |
    | Favorite | +3 |
    | Today is one of the dish's favorite days | +4 |
    | Matches the season | +2 |
